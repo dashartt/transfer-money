@@ -4,6 +4,7 @@ const theme = extendTheme({
   colors: {
     main: {
       green: '#10c4b5',
+      whitesmoke: '#fffefe',
     },
   },
   styles: {
