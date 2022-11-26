@@ -1,4 +1,4 @@
-import zod from "zod";
+import zod, { z } from "zod";
 
 export const userSchema = zod.object({
   username: zod
@@ -10,4 +10,13 @@ export const userSchema = zod.object({
     .min(8, "password must be min 8 characteres")
     .max(15, "password must be max 15 characteres"),
   accountId: zod.number().optional(),
+});
+
+export const transactionSchema = zod.object({
+  debitedAccountId: zod.number(),
+  creditedAccountId: zod.number(),
+  value: zod
+    .number()
+    .min(0.01, "Invalid value, transfers above R$0.01 are valid"),
+  createdAt: zod.date().optional(),
 });
