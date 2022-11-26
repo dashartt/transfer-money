@@ -1,7 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 
+export interface CustomError {
+  message: string;
+}
+
 class ErrorHandler {
-  middleware(err: Error, req: Request, res: Response, next: NextFunction) {
+  catchErrors(err: Error, _req: Request, res: Response, next: NextFunction) {
     if (err.message.includes("|")) {
       const [status, messages] = err.message.split("|");
       const errorMessages = messages.split(",");
