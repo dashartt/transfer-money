@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "test": "",
-    "dev": "npx prisma migrate dev && ts-node-dev --exit-child --respawn --transpile-only --no-notify ./src/index.ts",
+    "dev": "npx prisma migrate dev --name init && ts-node-dev --exit-child --respawn --transpile-only --no-notify ./src/index.ts",
     "build": "tsc",
     "migrate:dev": "npx prisma migrate dev"
   },
