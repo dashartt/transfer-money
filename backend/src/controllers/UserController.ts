@@ -23,12 +23,12 @@ class UserController {
 
   async login(req: Request, res: Response) {
     await this.service.login(req.body);
-    return res.status(200).end();
+    return res.status(200).json({ message: "User authenticated successfully" });
   }
 
   async register(req: Request, res: Response) {
     await this.service.register(req.body);
-    return res.status(201).end();
+    return res.status(201).json({ message: "Account created successfully" });
   }
 }
 
