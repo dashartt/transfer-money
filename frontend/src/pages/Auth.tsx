@@ -1,8 +1,12 @@
-import { Box, Flex, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Flex, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { useContext } from 'react';
 
 import AuthForm from '../components/auth-form/AuthForm';
+import { AuthFormContext, AuthFormContextValue } from '../contexts/AuthFormProvider';
 
 export default function Auth() {
+  const { tabIndex, setTabIndex } = useContext(AuthFormContext) as AuthFormContextValue;
+
   return (
     <Flex
       minH="100vh"
@@ -13,21 +17,36 @@ export default function Auth() {
       bgRepeat="no-repeat"
       bgPosition="center"
     >
-      <Tabs isLazy backgroundColor="gray.700" isFitted variant="enclosed">
-        <TabList mb="1em">
-          <Tab color="white" borderRadius="none">
+      <Tabs
+        isLazy
+        index={tabIndex}
+        onChange={(index) => setTabIndex(index)}
+        backgroundColor="gray.700"
+        isFitted
+        variant="enclosed"
+      >
+        <TabList>
+          <Tab
+            _selected={{ bg: '#e2e8f0', color: 'black' }}
+            color="white"
+            borderRadius="none"
+          >
             Create account
           </Tab>
-          <Tab color="white" borderRadius="none">
+          <Tab
+            _selected={{ bg: '#e2e8f0', color: 'black' }}
+            color="white"
+            borderRadius="none"
+          >
             Log in
           </Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
-            <AuthForm type="register" />
+            <AuthForm authType="register" />
           </TabPanel>
           <TabPanel>
-            <AuthForm type="login" />
+            <AuthForm authType="login" />
           </TabPanel>
         </TabPanels>
       </Tabs>
