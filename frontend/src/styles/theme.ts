@@ -5,6 +5,7 @@ const theme = extendTheme({
     main: {
       green: '#10c4b5',
       whitesmoke: '#fffefe',
+      lightGreen: '#e2e8f0',
     },
   },
   styles: {
