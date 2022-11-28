@@ -35,18 +35,20 @@ export default function AuthForm({ authType }: Props) {
       },
       authType,
     ).then((data) => {
-      if (data.includes('created')) {
+      console.log(data);
+
+      if (data?.message?.includes('created')) {
         setTabIndex(1);
         toast({
           ...toastConfig,
           description: data,
         });
-      } else if (data.includes('authenticated')) {
+      } else if (data?.message?.includes('authenticated')) {
         navigate('/');
       } else {
         toast({
           ...toastConfig,
-          description: <FormatMessageApi messageList={data} />,
+          description: <FormatMessageApi messageList={data.errors} />,
         });
       }
     });

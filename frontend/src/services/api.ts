@@ -12,6 +12,6 @@ const request = axios.create({
 export const requestAuth = async (reqData: AuthData, typeAuth: string) => {
   return request
     .post(`/auth?option=${typeAuth}`, { ...reqData })
-    .then(({ data }) => data.message)
-    .catch((error) => error.response.data.errors);
+    .then(({ data }) => data)
+    .catch((error) => error.response.data);
 };
