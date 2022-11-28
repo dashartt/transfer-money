@@ -4,6 +4,7 @@ import AccountSession from '../components/account-session/AccountSession';
 import Balance from '../components/balance/Balance';
 import History from '../components/history/History';
 import Transfer from '../components/transfer/Transfer';
+import BalanceProvider from '../contexts/BalanceProvider';
 
 export default function Home() {
   return (
@@ -17,7 +18,9 @@ export default function Home() {
           justifyContent="space-between"
         >
           <AccountSession />
-          <Balance />
+          <BalanceProvider>
+            <Balance />
+          </BalanceProvider>
         </Stack>
         <Box bg="whitesmoke" padding="2em" border="1px solid black">
           <Transfer />
