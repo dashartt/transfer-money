@@ -5,7 +5,6 @@ import { Route, Routes } from 'react-router-dom';
 import AuthFormProvider from './contexts/AuthFormProvider';
 import Auth from './pages/Auth';
 import Home from './pages/Home';
-import Transfer from './pages/Transfer';
 
 function App() {
   return (
@@ -18,7 +17,6 @@ function App() {
           </AuthFormProvider>
         }
       />
-      <Route path="/transfer" element={<Transfer />} />
       <Route path="/" element={<Home />} />
     </Routes>
   );
