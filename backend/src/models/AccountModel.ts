@@ -23,7 +23,7 @@ class AccountModel {
     return account.id;
   }
 
-  async getAccountId(username: string) {
+  async getAccountDetails(username: string) {
     const accountId = await this.prisma.account.findFirst({
       where: {
         user: {
@@ -32,6 +32,7 @@ class AccountModel {
       },
       select: {
         id: true,
+        balance: true,
       },
     });
 
