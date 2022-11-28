@@ -1,15 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-
-export interface Transfer {
-  debitedAccountId: number;
-  creditedAccountId: number;
-  value: number;
-}
-
-export interface Transaction extends Transfer {
-  id?: number;
-  createdAt: Date;
-}
+import { TransferOutput } from "../types/TransactionTypes";
 
 class TransactionModel {
   private prisma;
@@ -18,7 +8,7 @@ class TransactionModel {
     this.prisma = new PrismaClient();
   }
 
-  async registerTransfer(data: Transaction) {
+  async registerTransfer(data: TransferOutput) {
     await this.prisma.transaction.create({
       data: {
         creditedAccountId: data.creditedAccountId,
