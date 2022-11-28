@@ -1,5 +1,10 @@
 import { NextFunction, Request, Response } from "express";
+
 import TransactionService from "../services/TransactionService";
+import {
+  AccountsIdsForTransfer,
+  TransferInput,
+} from "../types/TransactionTypes";
 
 class TransactionController {
   private transactionService;
@@ -9,7 +14,15 @@ class TransactionController {
   }
 
   async registerTransfer(req: Request, res: Response, next: NextFunction) {
-    const hasError = await this.transactionService.registerTransfer(req.body);
+    const { creditedAccountId, debitedAccountId } =
+      req.accountsIdsForTransfer as AccountsIdsForTransfer;
+    const { value } = req.body as TransferInput;
+
+    const hasError = await this.transactionService.registerTransfer({
+      creditedAccountId,
+      debitedAccountId,
+      value,
+    });
 
     if (hasError) return next(hasError);
 

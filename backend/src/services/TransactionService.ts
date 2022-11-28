@@ -1,6 +1,6 @@
 import { transactionSchema } from "../config/zodSchemas";
-import TransactionModel, { Transaction } from "../models/TransactionModel";
-import AccountService from "./AccountService";
+import TransactionModel from "../models/TransactionModel";
+import { TransferOutput } from "../types/TransactionTypes";
 
 class TransactionService {
   private transactionModel;
@@ -9,38 +9,34 @@ class TransactionService {
     this.transactionModel = new TransactionModel();
   }
 
-  async registerTransfer(data: Transaction) {
-    const hasErrorData = this.validateData(data);
-    if (hasErrorData) return hasErrorData;
-
-    const accountService = new AccountService();
-    const hasErrorAccount = await accountService.validateCreditedAccount(
-      data.creditedAccountId
-    );
-    if (hasErrorAccount) return hasErrorAccount;
-
-    const hasErrorBalance = await accountService.validateBalance(
-      data.debitedAccountId,
-      data.value
-    );
-    if (hasErrorBalance) return hasErrorBalance;
-
-    await accountService.makeTransfer({
-      creditedAccountId: data.creditedAccountId,
-      debitedAccountId: data.debitedAccountId,
-      value: data.value,
+  async registerTransfer({
+    creditedAccountId,
+    debitedAccountId,
+    value,
+  }: TransferOutput) {
+    const hasErrorData = this.validateData({
+      debitedAccountId,
+      creditedAccountId,
+      value,
     });
 
-    await this.transactionModel.registerTransfer(data);
+    if (hasErrorData) return hasErrorData;
+
+    await this.transactionModel.registerTransfer({
+      debitedAccountId,
+      creditedAccountId,
+      value,
+    });
   }
 
   async getTransactionHistory(accountId: number) {
     const transactionHistory =
       await this.transactionModel.getTransactionHistory(accountId);
+
     return transactionHistory;
   }
 
-  validateData(data: Transaction) {
+  validateData(data: TransferOutput) {
     const parsed = transactionSchema.safeParse(data);
 
     if (!parsed.success) {
