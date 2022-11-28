@@ -1,5 +1,11 @@
 import AccountModel from "../models/AccountModel";
-import { Transfer } from "../models/TransactionModel";
+
+import {
+  FailInResponse,
+  ResponseOutput,
+  SuccessfulInResponse,
+} from "../types/ResponseTypes";
+import { AccountForTransfer, TransferOutput } from "../types/TransactionTypes";
 
 class AccountService {
   private accountModel;
@@ -8,14 +14,37 @@ class AccountService {
     this.accountModel = new AccountModel();
   }
 
-  async validateCreditedAccount(id: number) {
-    const accountFound = await this.accountModel.validateCreditedAccount(id);
+  async getAccountIdsToTransfer({
+    creditedAccount,
+    debitedAccount,
+  }: AccountForTransfer) {
+    const creditedAcc = await this.accountModel.getAccountId(creditedAccount);
+    const debitedAcc = await this.accountModel.getAccountId(debitedAccount);
 
-    if (!accountFound) {
+    if (!debitedAcc && !creditedAcc) {
       return {
-        message: "400|Account of the person who will receive is invalid",
-      };
+        fail: {
+          message: "404|Sender and recipient account not found ",
+        },
+      } as ResponseOutput<undefined, FailInResponse>;
+    } else if (!debitedAcc) {
+      return {
+        fail: { message: "404|Recipient account not found" },
+      } as ResponseOutput<undefined, FailInResponse>;
+    } else if (!creditedAcc) {
+      return {
+        fail: { message: "404|Recipient account not found" },
+      } as ResponseOutput<undefined, FailInResponse>;
     }
+
+    return {
+      success: {
+        data: {
+          debitedAccountId: debitedAcc?.id,
+          creditedAccountId: creditedAcc?.id,
+        },
+      },
+    } as ResponseOutput<SuccessfulInResponse, undefined>;
   }
 
   async validateBalance(accountId: number, transferAmount: number) {
@@ -23,11 +52,17 @@ class AccountService {
     const canTransfer = transferAmount <= balanceValue;
 
     if (!canTransfer) {
-      return { message: "409|Insufficient balance" };
+      return {
+        fail: { message: "409|Insufficient balance" },
+      } as ResponseOutput<undefined, FailInResponse>;
     }
+
+    return { success: { data: true } } as ResponseOutput<
+      SuccessfulInResponse | undefined
+    >;
   }
 
-  async makeTransfer(data: Transfer) {
+  async makeTransfer(data: TransferOutput) {
     await this.accountModel.makeTransfer(data);
   }
 }
