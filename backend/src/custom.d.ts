@@ -3,6 +3,7 @@ import {
   AccountForTransfer,
   AccountsIdsForTransfer,
 } from "./types/TransactionTypes";
+import { UserResponseOutput } from "./types/UserTypes";
 
 declare global {
   namespace Express {
@@ -10,6 +11,7 @@ declare global {
       tokenData?: JwtPayload;
       accountsForTransfer?: AccountForTransfer;
       accountsIdsForTransfer?: AccountsIdsForTransfer;
+      userData: UserResponseOutput;
     }
   }
 }
