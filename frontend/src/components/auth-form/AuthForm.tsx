@@ -44,7 +44,13 @@ export default function AuthForm({ authType }: Props) {
           description: data,
         });
       } else if (data?.message?.includes('authenticated')) {
-        localStorage.setItem('token', data.token);
+        localStorage.setItem(
+          'user',
+          JSON.stringify({
+            username: usernameRef.current?.value,
+            token: data.token,
+          }),
+        );
         navigate('/');
       } else {
         toast({
