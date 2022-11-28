@@ -12,4 +12,5 @@ export type AuthRequestDTO = {
 export type AuthedUserDTO = {
   username: string;
   token: string;
+  balance: number;
 };
