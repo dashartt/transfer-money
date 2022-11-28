@@ -14,12 +14,34 @@ class AccountService {
     this.accountModel = new AccountModel();
   }
 
+  async getAccountDetails(username: string) {
+    const accountDetails = await this.accountModel.getAccountDetails(username);
+
+    if (!accountDetails) {
+      return {
+        fail: {
+          message: "404|Account not found ",
+        },
+      } as ResponseOutput<undefined, FailInResponse>;
+    }
+
+    return {
+      success: {
+        data: accountDetails,
+      },
+    } as ResponseOutput<SuccessfulInResponse, undefined>;
+  }
+
   async getAccountIdsToTransfer({
     creditedAccount,
     debitedAccount,
   }: AccountForTransfer) {
-    const creditedAcc = await this.accountModel.getAccountId(creditedAccount);
-    const debitedAcc = await this.accountModel.getAccountId(debitedAccount);
+    const creditedAcc = await this.accountModel.getAccountDetails(
+      creditedAccount
+    );
+    const debitedAcc = await this.accountModel.getAccountDetails(
+      debitedAccount
+    );
 
     if (!debitedAcc && !creditedAcc) {
       return {
@@ -57,7 +79,7 @@ class AccountService {
       } as ResponseOutput<undefined, FailInResponse>;
     }
 
-    return { success: { data: true } } as ResponseOutput<
+    return { success: { data: balanceValue } } as ResponseOutput<
       SuccessfulInResponse | undefined
     >;
   }

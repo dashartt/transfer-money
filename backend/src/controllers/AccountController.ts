@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import AccountService from "../services/AccountService";
+import { AccountDetails } from "../types/AccountTypes";
 import {
   AccountsIdsForTransfer,
   TransferInput,
@@ -10,6 +11,17 @@ class AccountController {
 
   constructor() {
     this.service = new AccountService();
+  }
+
+  async getBalance(req: Request, res: Response, next: NextFunction) {
+    const username = req.params?.username || "";
+    const accountDetails = (await this.service.getAccountDetails(
+      username
+    )) as AccountDetails;
+
+    return res.status(200).json({
+      balance: accountDetails.balance,
+    });
   }
 
   async getAccountIdsToTransfer(
@@ -23,7 +35,6 @@ class AccountController {
       creditedAccount,
       debitedAccount,
     });
-    console.log(responseOutput.fail);
 
     if (responseOutput.fail) {
       return next(responseOutput.fail);
@@ -44,8 +55,6 @@ class AccountController {
       debitedAccountId,
       value
     );
-
-    console.log(responseOutput.fail);
 
     if (responseOutput.fail) {
       return next(responseOutput.fail);
