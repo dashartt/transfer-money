@@ -48,6 +48,7 @@ export default function AuthForm({ authType }: Props) {
           'user',
           JSON.stringify({
             username: usernameRef.current?.value,
+            balance: data.balance,
             token: data.token,
           }),
         );
