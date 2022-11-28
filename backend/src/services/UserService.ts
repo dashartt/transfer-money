@@ -1,3 +1,4 @@
+import AuthHandler from "../auth/AuthHandler";
 import { userSchema } from "../config/zodSchemas";
 import UserModel, { User } from "../models/UserModel";
 
@@ -21,6 +22,7 @@ class UserService {
     if (hasError) return hasError;
 
     await this.userModel.login(data);
+    return AuthHandler.createToken(data.username);
   }
 
   validateData(data: User) {

@@ -22,8 +22,10 @@ class UserController {
   }
 
   async login(req: Request, res: Response) {
-    await this.service.login(req.body);
-    return res.status(200).json({ message: "User authenticated successfully" });
+    const token = await this.service.login(req.body);
+    return res
+      .status(200)
+      .json({ token, message: "User authenticated successfully" });
   }
 
   async register(req: Request, res: Response) {
