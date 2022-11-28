@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { Transfer } from "./TransactionModel";
+import { TransferOutput } from "../types/TransactionTypes";
 
 export interface Account {
   id?: number;
@@ -21,6 +21,21 @@ class AccountModel {
     });
 
     return account.id;
+  }
+
+  async getAccountId(username: string) {
+    const accountId = await this.prisma.account.findFirst({
+      where: {
+        user: {
+          username,
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    return accountId;
   }
 
   async validateCreditedAccount(creditedAccountId: number) {
@@ -57,7 +72,7 @@ class AccountModel {
     });
   }
 
-  async makeTransfer(data: Transfer) {
+  async makeTransfer(data: TransferOutput) {
     const balanceBeforeCredit = await this.getBalance(data.creditedAccountId);
     const balanceBeforeDebit = await this.getBalance(data.debitedAccountId);
 
