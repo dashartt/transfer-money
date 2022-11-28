@@ -20,6 +20,8 @@ class UserModel {
     if (!userFound || !isValidPassword) {
       throw new Error("400|Invalid username or password");
     }
+
+    return userFound;
   }
 
   async register(data: UserDTO) {

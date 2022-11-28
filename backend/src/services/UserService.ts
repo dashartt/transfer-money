@@ -1,6 +1,12 @@
 import AuthHandler from "../auth/AuthHandler";
 import { userSchema } from "../config/zodSchemas";
-import UserModel, { User } from "../models/UserModel";
+import UserModel from "../models/UserModel";
+import {
+  FailInResponse,
+  ResponseOutput,
+  SuccessfulInResponse,
+} from "../types/ResponseTypes";
+import { UserDTO } from "../types/UserTypes";
 
 class UserService {
   private userModel;
@@ -9,30 +15,44 @@ class UserService {
     this.userModel = new UserModel();
   }
 
-  async register(data: User) {
-    const hasError = this.validateData(data);
-    if (hasError) return hasError;
-
+  async register(data: UserDTO) {
     await this.userModel.register(data);
+
+    return {
+      success: {
+        data: true,
+      },
+    } as ResponseOutput<SuccessfulInResponse, undefined>;
   }
 
-  async login(data: User) {
-    const hasError = this.validateData(data);
+  async login(data: UserDTO) {
+    const userFound = await this.userModel.login(data);
 
-    if (hasError) return hasError;
-
-    await this.userModel.login(data);
-    return AuthHandler.createToken(data.username);
+    return {
+      success: {
+        data: {
+          token: AuthHandler.createToken(data.username),
+          username: userFound.username,
+        },
+      },
+    } as ResponseOutput<SuccessfulInResponse, undefined>;
   }
 
-  validateData(data: User) {
+  validateData(data: UserDTO) {
     const parsed = userSchema.safeParse(data);
 
     if (!parsed.success) {
       const errors = parsed.error.issues.map((error) => error.message);
-      const errorMessage = { message: `400|${errors}` };
-      return errorMessage;
+      return {
+        fail: { message: `400|${errors}` },
+      } as ResponseOutput<undefined, FailInResponse>;
     }
+
+    return {
+      success: {
+        data: true,
+      },
+    } as ResponseOutput<SuccessfulInResponse, undefined>;
   }
 }
 
