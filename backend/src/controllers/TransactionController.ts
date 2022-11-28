@@ -13,7 +13,7 @@ class TransactionController {
 
     if (hasError) return next(hasError);
 
-    return res.status(200).end();
+    return res.status(200).json({ message: "Successful transfer" });
   }
 
   async getTransactionHistory(req: Request, res: Response, next: NextFunction) {
