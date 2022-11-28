@@ -1,8 +1,20 @@
 import { Button, Heading, VStack } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
+
+type User = {
+  username: string;
+  token: string;
+};
 
 export default function AccountSession() {
   const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user') || '') as User;
+    setUsername(user.username);
+  }, []);
 
   const logOut = () => {
     localStorage.removeItem('token');
@@ -12,7 +24,7 @@ export default function AccountSession() {
   return (
     <VStack>
       <Heading alignSelf={{ base: 'flex-start', lg: 'baseline' }} as="h1">
-        Hello, username!
+        Hello, {username}!
       </Heading>
       <Button
         _active={{ backgroundColor: 'main.gren' }}
