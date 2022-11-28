@@ -1,18 +1,15 @@
 import { Button, Heading, VStack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-type User = {
-  username: string;
-  token: string;
-};
+import { AuthedUserDTO } from '../../types/RequestData';
 
 export default function AccountSession() {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user') || '') as User;
+    const user = JSON.parse(localStorage.getItem('user') || '') as AuthedUserDTO;
     setUsername(user.username);
   }, []);
 
