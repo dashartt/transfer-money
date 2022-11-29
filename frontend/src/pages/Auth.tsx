@@ -1,11 +1,11 @@
 import { Flex, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
-import { useContext } from 'react';
+import { useRecoilState } from 'recoil';
 
 import AuthForm from '../components/auth-form/AuthForm';
-import { AuthFormContext, AuthFormContextValue } from '../contexts/AuthFormProvider';
+import { authFormState } from '../recoil/atoms';
 
 export default function Auth() {
-  const { tabIndex, setTabIndex } = useContext(AuthFormContext) as AuthFormContextValue;
+  const [tabIndex, setTabIndex] = useRecoilState(authFormState);
 
   return (
     <Flex

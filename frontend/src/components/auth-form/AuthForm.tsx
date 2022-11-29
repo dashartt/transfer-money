@@ -7,10 +7,11 @@ import {
   useToast,
   VStack,
 } from '@chakra-ui/react';
-import { FormEventHandler, useContext, useRef } from 'react';
+import { FormEventHandler, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 
-import { AuthFormContext, AuthFormContextValue } from '../../contexts/AuthFormProvider';
+import { authFormState } from '../../recoil/atoms';
 import { requestAuth } from '../../services/api';
 import toastConfig from '../../utils/toastConfig';
 import FormatMessageApi from '../messages/FormatMessageApi';
@@ -20,9 +21,9 @@ type Props = {
 };
 
 export default function AuthForm({ authType }: Props) {
-  const navigate = useNavigate();
-  const { setTabIndex } = useContext(AuthFormContext) as AuthFormContextValue;
+  const [_tabIndex, setTabIndex] = useRecoilState(authFormState);
   const toast = useToast();
+  const navigate = useNavigate();
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
@@ -41,7 +42,7 @@ export default function AuthForm({ authType }: Props) {
         setTabIndex(1);
         toast({
           ...toastConfig,
-          description: data,
+          description: data?.message,
         });
       } else if (data?.message?.includes('authenticated')) {
         localStorage.setItem(

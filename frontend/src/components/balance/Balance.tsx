@@ -1,11 +1,12 @@
 import { Box, Heading, Text, VStack } from '@chakra-ui/react';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 
-import { BalanceContext, BalanceContextValue } from '../../contexts/BalanceProvider';
+import { balanceState } from '../../recoil/atoms';
 import { AuthedUserDTO } from '../../types/RequestData';
 
 export default function Balance() {
-  const { balance, setBalance } = useContext(BalanceContext) as BalanceContextValue;
+  const [balance, setBalance] = useRecoilState(balanceState);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem('user') || '') as AuthedUserDTO;
