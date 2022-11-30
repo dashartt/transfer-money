@@ -7,8 +7,8 @@ import Transfer from '../components/transfer/Transfer';
 
 export default function Home() {
   return (
-    <Box minH="100vh" bg="main.green" padding={{ base: 'auto', lg: '10em 20em' }}>
-      <SimpleGrid columns={1} spacing={5}>
+    <Box minH="100vh" bg="main.green" padding={{ base: 'auto', lg: '10em' }}>
+      <SimpleGrid columns={1} spacing={5} maxW="container.lg" margin="0 auto">
         <Stack
           direction={{ base: 'column', sm: 'row' }}
           bg="whitesmoke"
