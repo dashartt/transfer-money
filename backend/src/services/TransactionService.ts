@@ -1,6 +1,7 @@
 import { transactionSchema } from "../config/zodSchemas";
 import TransactionModel from "../models/TransactionModel";
 import { TransferOutput } from "../types/TransactionTypes";
+import { formatTransactionHistory } from "../utils/formatDataFromDb";
 
 class TransactionService {
   private transactionModel;
@@ -33,7 +34,7 @@ class TransactionService {
     const transactionHistory =
       await this.transactionModel.getTransactionHistory(accountId);
 
-    return transactionHistory;
+    return formatTransactionHistory(transactionHistory);
   }
 
   validateData(data: TransferOutput) {
