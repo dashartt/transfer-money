@@ -2,7 +2,7 @@ import { Box, SimpleGrid, Stack } from '@chakra-ui/react';
 
 import AccountSession from '../components/account-session/AccountSession';
 import Balance from '../components/balance/Balance';
-import History from '../components/history/History';
+import History from '../components/transaction-history/TransactionHistory';
 import Transfer from '../components/transfer/Transfer';
 
 export default function Home() {
