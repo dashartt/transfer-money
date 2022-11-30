@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import AccountService from "../services/AccountService";
 import UserService from "../services/UserService";
-import { UserResponseOutput } from "../types/UserTypes";
+import { AuthedUserResponse } from "../types/UserTypes";
 
 class UserController {
   private service;
@@ -27,15 +27,16 @@ class UserController {
     const userResponseOutput = await this.service.login(req.body);
 
     const { token, username } = userResponseOutput.success
-      ?.data as UserResponseOutput;
+      ?.data as AuthedUserResponse;
 
     const accountResponseOutput = await new AccountService().getAccountDetails(
       username
     );
 
     if (accountResponseOutput.fail) return next(accountResponseOutput.fail);
+
     const { balance } = accountResponseOutput.success
-      ?.data as UserResponseOutput;
+      ?.data as AuthedUserResponse;
 
     return res.status(200).json({
       token,

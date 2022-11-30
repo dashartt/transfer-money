@@ -1,10 +1,11 @@
-import { JwtPayload, sign, verify } from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
+import { UserToken } from "../types/UserTypes";
 
 const jwtKey = process.env.JWT_KEY || "";
 
 class AuthHandler {
-  static createToken(username: string) {
-    return sign({ username }, jwtKey);
+  static createToken({ accountId, username }: UserToken) {
+    return sign({ username, accountId }, jwtKey);
   }
 
   static validateToken(token: string) {
@@ -12,7 +13,7 @@ class AuthHandler {
 
     try {
       const data = verify(token, jwtKey);
-      return data as JwtPayload;
+      return data as UserToken;
     } catch (error) {
       if (error) {
         throw new Error("400|Token must be a valid");

@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import AccountModel from "./AccountModel";
 import { hash, compare } from "bcryptjs";
-import { UserDTO } from "../types/UserTypes";
+import { UserModelAttrs } from "../types/UserTypes";
 
 class UserModel {
   private prisma;
@@ -10,8 +10,8 @@ class UserModel {
     this.prisma = new PrismaClient();
   }
 
-  async login(data: UserDTO) {
-    const userFound = await this.searchByUser(data);
+  async login(data: UserModelAttrs) {
+    const userFound = await this.searchByUser(data.username);
     const isValidPassword = await compare(
       data.password,
       userFound?.password || ""
@@ -24,8 +24,8 @@ class UserModel {
     return userFound;
   }
 
-  async register(data: UserDTO) {
-    const userFound = await this.searchByUser(data);
+  async register(data: UserModelAttrs) {
+    const userFound = await this.searchByUser(data.username);
 
     if (userFound) {
       throw new Error("409|User already exists");
@@ -43,10 +43,10 @@ class UserModel {
     });
   }
 
-  async searchByUser(data: UserDTO) {
+  async searchByUser(username: string) {
     const userFound = await this.prisma.user.findFirst({
       where: {
-        username: data.username,
+        username: username,
       },
     });
 

@@ -6,7 +6,7 @@ import {
   ResponseOutput,
   SuccessfulInResponse,
 } from "../types/ResponseTypes";
-import { UserDTO } from "../types/UserTypes";
+import { UserModelAttrs } from "../types/UserTypes";
 
 class UserService {
   private userModel;
@@ -15,7 +15,7 @@ class UserService {
     this.userModel = new UserModel();
   }
 
-  async register(data: UserDTO) {
+  async register(data: UserModelAttrs) {
     await this.userModel.register(data);
 
     return {
@@ -25,20 +25,23 @@ class UserService {
     } as ResponseOutput<SuccessfulInResponse, undefined>;
   }
 
-  async login(data: UserDTO) {
+  async login(data: UserModelAttrs) {
     const userFound = await this.userModel.login(data);
 
     return {
       success: {
         data: {
-          token: AuthHandler.createToken(data.username),
+          token: AuthHandler.createToken({
+            username: userFound.username,
+            accountId: userFound.accountId,
+          }),
           username: userFound.username,
         },
       },
     } as ResponseOutput<SuccessfulInResponse, undefined>;
   }
 
-  validateData(data: UserDTO) {
+  validateData(data: UserModelAttrs) {
     const parsed = userSchema.safeParse(data);
 
     if (!parsed.success) {
