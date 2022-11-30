@@ -8,7 +8,7 @@ export default function History() {
     <Box>
       <VStack alignItems="flex-start">
         <HStack>
-          <Icon fontSize="2em" as={FaHistory} />
+          <Icon as={FaHistory} />
           <Heading as="h1">History</Heading>
         </HStack>
 

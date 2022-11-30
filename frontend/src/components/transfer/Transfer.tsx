@@ -65,7 +65,7 @@ export default function Transfer() {
     <chakra.form onSubmit={onSubmit}>
       <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
         <HStack>
-          <Icon fontSize="2em" as={RiMoneyDollarCircleLine} />
+          <Icon as={RiMoneyDollarCircleLine} />
           <Heading as="h1">Transfer</Heading>
         </HStack>
 
