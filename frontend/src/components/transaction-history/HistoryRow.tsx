@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { requestTransactionHistory } from '../../services/api';
 import { TransactionDTO } from '../../types/Transaction';
+import HistoryRowHelper from './HistoryRowHelper';
 
 function HistoryRow() {
   const [transactions, setTransactions] = useState<TransactionDTO[]>([]);
@@ -18,10 +19,7 @@ function HistoryRow() {
     <Tbody>
       {transactions?.map((transaction) => (
         <Tr key={uuidv4()}>
-          <Td>{transaction?.date}</Td>
-          <Td>{`${transaction.debitedAccount} -> ${transaction.creditedAccount} `}</Td>
-          <Td>{`R$${transaction.inCome.toLocaleString('pt-BR')}`}</Td>
-          <Td>{`R$${transaction.outCome.toLocaleString('pt-BR')}`}</Td>
+          <HistoryRowHelper transaction={transaction} />
         </Tr>
       ))}
     </Tbody>
