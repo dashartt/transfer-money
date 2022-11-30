@@ -4,14 +4,15 @@ import { FaRegSmileBeam } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 import { AuthedUserDTO } from '../../types/RequestData';
+import LocalStorage from '../../utils/LocalStorage';
 
 export default function AccountSession() {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user') || '') as AuthedUserDTO;
-    setUsername(user.username);
+    const userData = LocalStorage.get('user') as AuthedUserDTO;
+    setUsername(userData?.username ?? 'client');
   }, []);
 
   const logOut = () => {

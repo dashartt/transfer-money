@@ -4,14 +4,14 @@ import { useRecoilState } from 'recoil';
 
 import { balanceState } from '../../recoil/atoms';
 import { AuthedUserDTO } from '../../types/RequestData';
+import LocalStorage from '../../utils/LocalStorage';
 
 export default function Balance() {
   const [balance, setBalance] = useRecoilState(balanceState);
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem('user') || '') as AuthedUserDTO;
-
-    setBalance(userData.balance);
+    const userData = LocalStorage.get('user') as AuthedUserDTO;
+    setBalance(userData?.balance ?? 0);
   }, []);
 
   return (
