@@ -1,12 +1,21 @@
-export interface UserDTO {
-  id?: number;
+export type UserCredentials = {
   username: string;
   password: string;
-  accountId: number;
-}
+};
 
-export interface UserResponseOutput {
+export type UserModelAttrs = UserCredentials & {
+  id?: number;
+  accountId: number;
+};
+
+export type AuthedUserResponse = {
   token: string;
   username: string;
-  balance?: number;
-}
+  balance: number;
+  message: string;
+};
+
+export type UserToken = {
+  accountId: number;
+  username: string;
+};

@@ -3,15 +3,15 @@ import {
   AccountForTransfer,
   AccountsIdsForTransfer,
 } from "./types/TransactionTypes";
-import { UserResponseOutput } from "./types/UserTypes";
+import { AuthedUserResponse, UserToken } from "./types/UserTypes";
 
 declare global {
   namespace Express {
     interface Request {
-      tokenData?: JwtPayload;
+      tokenData?: UserToken;
       accountsForTransfer?: AccountForTransfer;
       accountsIdsForTransfer?: AccountsIdsForTransfer;
-      userData: UserResponseOutput;
+      userData: AuthedUserResponse;
     }
   }
 }
