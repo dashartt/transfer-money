@@ -31,7 +31,7 @@ router.post(
 );
 
 router.get(
-  "/transactions/history/:id",
+  "/transactions/history",
   checkAuth,
   (req: Request, res: Response, next: NextFunction) => {
     transactionController.getTransactionHistory(req, res, next);
