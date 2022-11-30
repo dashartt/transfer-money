@@ -29,8 +29,8 @@ class TransactionModel {
       ON us1.accountId = tr.creditedAccountId
       INNER JOIN User as us2
       ON us2.accountId = tr.debitedAccountId
-      WHERE us1.accountId = tr.creditedAccountId OR us1.accountId = tr.debitedAccountId
-    `) as TransactionOutput;
+      WHERE ${accountId} = tr.creditedAccountId OR ${accountId} = tr.debitedAccountId
+    `) as TransactionOutput[];
 
     return transactionHistory;
   }
