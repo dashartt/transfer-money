@@ -10,8 +10,8 @@ function HistoryTable() {
           <Tr>
             <Th>Date</Th>
             <Th>Description</Th>
-            <Th isNumeric>Income</Th>
-            <Th isNumeric>Outcome</Th>
+            <Th>Income</Th>
+            <Th>Outcome</Th>
           </Tr>
         </Thead>
         <HistoryRow />
