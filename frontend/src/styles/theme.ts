@@ -10,8 +10,17 @@ const theme = extendTheme({
   },
   styles: {
     global: {
+      svg: {
+        'font-size': '2em',
+      },
       a: {
         'text-decoration': 'none',
+      },
+      th: {
+        'text-align': 'center !important',
+      },
+      td: {
+        'text-align': 'center !important',
       },
     },
   },
