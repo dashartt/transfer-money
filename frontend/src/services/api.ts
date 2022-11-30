@@ -14,8 +14,31 @@ export const requestAuth = async (reqData: AuthRequestDTO, typeAuth: string) => 
 };
 
 export const requestTransfer = async (reqData: TransferRequestDTO) => {
+  const token = JSON.parse(localStorage.getItem('user') || '')?.token;
+
   return request
-    .post('/transactions/transfer', { reqData })
+    .post(
+      '/transactions/transfer',
+      { ...reqData },
+      {
+        headers: {
+          Authorization: token,
+        },
+      },
+    )
+    .then(({ data }) => data)
+    .catch((error) => error.response.data);
+};
+
+export const requestTransactionHistory = async () => {
+  const token = JSON.parse(localStorage.getItem('user') || '')?.token;
+
+  return request
+    .get('/transactions/history', {
+      headers: {
+        Authorization: token,
+      },
+    })
     .then(({ data }) => data)
     .catch((error) => error.response.data);
 };
