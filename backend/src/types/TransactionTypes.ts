@@ -16,7 +16,13 @@ export interface TransferInput extends AccountForTransfer {
   value: number;
 }
 
-export interface Transaction extends TransferOutput {
+export interface TransactionInput extends TransferOutput {
   id?: number;
   createdAt: Date;
+}
+
+export interface TransactionOutput extends AccountForTransfer {
+  inCome: number;
+  outCome: number;
+  datetime: string | Date;
 }
