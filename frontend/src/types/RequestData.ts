@@ -1,6 +1,6 @@
 export type TransferRequestDTO = {
-  ownerDebitedAccount: string;
-  ownerCreditedAccount: string;
+  debitedAccount: string;
+  creditedAccount: string;
   value: number;
 };
 
