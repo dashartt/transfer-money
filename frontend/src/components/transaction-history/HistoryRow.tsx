@@ -1,4 +1,4 @@
-import { Tbody, Td, Tr } from '@chakra-ui/react';
+import { Tbody, Td, Text, Tr } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -22,6 +22,10 @@ function HistoryRow() {
           <HistoryRowHelper transaction={transaction} />
         </Tr>
       ))}
+
+      {transactions.length === 0 && (
+        <Text>Transfers linked to this account have not yet occurred</Text>
+      )}
     </Tbody>
   );
 }
