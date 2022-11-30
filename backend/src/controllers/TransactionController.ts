@@ -32,10 +32,10 @@ class TransactionController {
   async getTransactionHistory(req: Request, res: Response, next: NextFunction) {
     const transactionHistory =
       await this.transactionService.getTransactionHistory(
-        Number(req.params.id)
+        req.tokenData?.accountId || 0
       );
 
-    return res.status(200).json({ data: transactionHistory });
+    return res.status(200).json(transactionHistory);
   }
 }
 
