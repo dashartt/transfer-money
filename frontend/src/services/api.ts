@@ -3,7 +3,7 @@ import axios from 'axios';
 import { AuthRequestDTO, TransferRequestDTO } from '../types/RequestData';
 
 const request = axios.create({
-  baseURL: 'http://localhost:3001/',
+  baseURL: 'http://localhost:3001',
 });
 
 export const requestAuth = async (reqData: AuthRequestDTO, typeAuth: string) => {
