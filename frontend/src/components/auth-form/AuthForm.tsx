@@ -13,6 +13,7 @@ import { useRecoilState } from 'recoil';
 
 import { authFormState } from '../../recoil/atoms';
 import { requestAuth } from '../../services/api';
+import LocalStorage from '../../utils/LocalStorage';
 import toastConfig from '../../utils/toastConfig';
 import FormatMessageApi from '../messages/FormatMessageApi';
 
@@ -45,14 +46,11 @@ export default function AuthForm({ authType }: Props) {
           description: data?.message,
         });
       } else if (data?.message?.includes('authenticated')) {
-        localStorage.setItem(
-          'user',
-          JSON.stringify({
-            username: usernameRef.current?.value,
-            balance: data.balance,
-            token: data.token,
-          }),
-        );
+        LocalStorage.set('user', {
+          username: data.username,
+          balance: data.balance,
+          token: data.token,
+        });
         navigate('/');
       } else {
         toast({
