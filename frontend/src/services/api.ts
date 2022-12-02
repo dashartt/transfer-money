@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { AuthRequestDTO, TransferRequestDTO } from '../types/RequestData';
+import { AuthRequestDTO, DepositDTO, TransferRequestDTO } from '../types/RequestData';
 
 const request = axios.create({
   baseURL: 'http://localhost:3001',
@@ -9,6 +9,23 @@ const request = axios.create({
 export const requestAuth = async (reqData: AuthRequestDTO, typeAuth: string) => {
   return request
     .post(`/auth?option=${typeAuth}`, { ...reqData })
+    .then(({ data }) => data)
+    .catch((error) => error.response.data);
+};
+
+export const requestDepositAmount = async (reqData: DepositDTO) => {
+  const token = JSON.parse(localStorage.getItem('user') || '')?.token;
+
+  return request
+    .patch(
+      '/account/deposit',
+      { ...reqData },
+      {
+        headers: {
+          Authorization: token,
+        },
+      },
+    )
     .then(({ data }) => data)
     .catch((error) => error.response.data);
 };
