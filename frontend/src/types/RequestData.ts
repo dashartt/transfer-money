@@ -14,3 +14,7 @@ export type AuthedUserDTO = {
   token: string;
   balance: number;
 };
+
+export type DepositDTO = {
+  amount: number;
+};
