@@ -13,6 +13,13 @@ router.post("/auth", (req: Request, res: Response, next: NextFunction) =>
   userController.auth(req, res, next)
 );
 
+router.patch(
+  "/account/deposit",
+  checkAuth,
+  (req: Request, res: Response, next: NextFunction) =>
+    accountController.makeDeposit(req, res, next)
+);
+
 router.post(
   "/transactions/transfer",
   checkAuth,

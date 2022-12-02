@@ -1,4 +1,6 @@
+import { depositSchema } from "../config/zodSchemas";
 import AccountModel from "../models/AccountModel";
+import { DepositInput } from "../types/AccountTypes";
 
 import {
   FailInResponse,
@@ -84,8 +86,54 @@ class AccountService {
     >;
   }
 
+  async makeDeposit({ amount, username }: DepositInput) {
+    const responseValidate = this.validateData({ amount, username });
+
+    if (responseValidate.fail) {
+      return responseValidate;
+    }
+
+    const responseAccountDetails = await this.getAccountDetails(username);
+
+    if (responseAccountDetails.fail) {
+      return responseAccountDetails;
+    }
+
+    const accountDetails = responseAccountDetails.success?.data as {
+      id: number;
+    };
+
+    const balanceAfterDeposit = await this.accountModel.makeDeposit({
+      amount,
+      accountId: accountDetails.id,
+    });
+
+    return {
+      success: {
+        data: balanceAfterDeposit,
+      },
+    } as ResponseOutput<SuccessfulInResponse, undefined>;
+  }
+
   async makeTransfer(data: TransferOutput) {
     await this.accountModel.makeTransfer(data);
+  }
+
+  validateData({ amount, username }: DepositInput) {
+    const parsedDeposit = depositSchema.safeParse({ amount, username });
+
+    if (!parsedDeposit.success) {
+      const errors = parsedDeposit.error.issues.map((error) => error.message);
+      return {
+        fail: { message: `400|${errors}` },
+      } as ResponseOutput<undefined, FailInResponse>;
+    }
+
+    return {
+      success: {
+        data: true,
+      },
+    } as ResponseOutput<SuccessfulInResponse, undefined>;
   }
 }
 

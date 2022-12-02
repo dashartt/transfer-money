@@ -63,6 +63,24 @@ class AccountController {
     next();
   }
 
+  async makeDeposit(req: Request, res: Response, next: NextFunction) {
+    const amount = req.body?.amount || 0;
+
+    const responseDeposit = await this.service.makeDeposit({
+      amount,
+      username: req?.tokenData?.username || "",
+    });
+
+    if (responseDeposit?.fail) {
+      return next(responseDeposit.fail);
+    }
+
+    return res.status(200).json({
+      balance: responseDeposit?.success?.data,
+      message: "Successfully deposited",
+    });
+  }
+
   async makeTransfer(req: Request, res: Response, next: NextFunction) {
     const { debitedAccountId, creditedAccountId } =
       req.accountsIdsForTransfer as AccountsIdsForTransfer;

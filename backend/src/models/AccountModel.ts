@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { DepositOutput } from "../types/AccountTypes";
 import { TransferOutput } from "../types/TransactionTypes";
 
 export interface Account {
@@ -71,6 +72,14 @@ class AccountModel {
         balance: value,
       },
     });
+  }
+
+  async makeDeposit({ amount, accountId }: DepositOutput) {
+    const balanceBeforeDeposit = await this.getBalance(accountId);
+    const balanceAfterDeposit = balanceBeforeDeposit + amount;
+
+    await this.updateBalance(accountId, balanceAfterDeposit);
+    return balanceAfterDeposit;
   }
 
   async makeTransfer(data: TransferOutput) {
