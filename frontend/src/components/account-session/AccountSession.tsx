@@ -22,10 +22,8 @@ export default function AccountSession() {
 
   return (
     <VStack>
-      <HStack>
-        <Heading alignSelf={{ base: 'flex-start', lg: 'baseline' }} as="h1">
-          Hello, {username}!
-        </Heading>
+      <HStack w="full" justifyContent="flex-start">
+        <Heading as="h1">Hello, {username}!</Heading>
         <Icon as={FaRegSmileBeam} />
       </HStack>
       <Button
