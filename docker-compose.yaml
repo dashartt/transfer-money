@@ -9,6 +9,8 @@ services:
       - backend
     volumes:
       - ./frontend:/frontend
+    networks:
+      - internal_network
   backend:
     container_name: backend
     build: ./backend
@@ -21,6 +23,8 @@ services:
     environment:
       - DATABASE_URL=mysql://root:123456@database:3306/transfer_money
       - API_PORT=3001
+    networks:
+      - internal_network
   database:
     image: mysql:8.0.21
     container_name: database
@@ -30,3 +34,8 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=123456
     restart: "always"
+    networks:
+      - internal_network
+
+networks:
+  internal_network:
