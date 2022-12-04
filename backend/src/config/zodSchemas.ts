@@ -13,7 +13,7 @@ export const userSchema = zod.object({
 });
 
 export const transactionSchema = zod.object({
-  debitedAccountId: zod.number(),
+  debitedAccountId: zod.number().optional(),
   creditedAccountId: zod.number(),
   value: zod
     .number()
