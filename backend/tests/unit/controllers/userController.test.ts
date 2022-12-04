@@ -60,9 +60,30 @@ describe("User controller test", () => {
       await userController.login(req, res, next);
 
       // assert
-      const { status, ...data } = responseMock.authenticatedUserResponse;
+      const { status, ...data } = responseMock.loginSucessUserResponse;
       expect(res.status).toBeCalledWith(status);
       expect(res.json).toBeCalledWith({ ...data });
+    });
+
+    it("should return 400 and invalid user in json", async () => {
+      // arrange
+      jest.spyOn(UserService.prototype, "login").mockImplementationOnce(() => {
+        throw new Error("400|Invalid username or password");
+      });
+
+      req = { body: userMock.validUser } as unknown as Request;
+      res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      } as unknown as Response;
+
+      // assert
+      expect(
+        // act
+        async () => {
+          await userController.login(req, res, next);
+        }
+      ).rejects.toThrow("400|Invalid username or password");
     });
   });
 });
