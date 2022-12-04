@@ -1,12 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import AccountService from "../services/AccountService";
-import { AccountDetails } from "../types/AccountTypes";
-import { LoginSuccessNext } from "../types/ServerTypes";
+import { AccountDetails, DepositOutput } from "../types/AccountTypes";
 import {
   AccountsIdsForTransfer,
   TransferInput,
 } from "../types/TransactionTypes";
-import { UserToken } from "../types/UserTypes";
 
 class AccountController {
   private service;
@@ -27,7 +25,9 @@ class AccountController {
   }
 
   async getAccountDetails(req: Request, res: Response, next: NextFunction) {
-    const { username } = req.tokenData as UserToken;
+    let username = req.tokenData?.username;
+
+    if (!username) username = req.loginSuccessData!.username;
 
     const serviceOutput = await this.service.getAccountDetails(username);
 
@@ -69,7 +69,7 @@ class AccountController {
     const { value } = req.body as TransferInput;
 
     const responseOutput = await this.service.validateBalance(
-      debitedAccountId,
+      debitedAccountId!,
       value
     );
 
@@ -81,16 +81,25 @@ class AccountController {
   }
 
   async makeDeposit(req: Request, res: Response, next: NextFunction) {
-    const amount = req.body?.amount || 0;
+    const value = req.body?.value || 0;
     const accountId = req.tokenData!.accountId;
 
-    const serviceOutput = await this.service.makeDeposit({ amount, accountId });
+    const serviceOutput = await this.service.makeDeposit({ value, accountId });
 
     if (serviceOutput.fail) {
       return next(serviceOutput.fail);
     }
 
+    req.accountsIdsForTransfer = { creditedAccountId: accountId };
+
     const balance = serviceOutput.success!.data as number;
+    req.depositOutput = { balance, accountId };
+
+    next();
+  }
+
+  async afterDeposit(req: Request, res: Response, next: NextFunction) {
+    const { balance } = req.depositOutput as DepositOutput;
 
     return res.status(200).json({
       balance,
