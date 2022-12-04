@@ -12,25 +12,11 @@ class UserModel {
 
   async login(data: UserModelAttrs) {
     const userFound = await this.searchByUser(data.username);
-    const isValidPassword = await compare(
-      data.password,
-      userFound?.password || ""
-    );
-
-    if (!userFound || !isValidPassword) {
-      throw new Error("400|Invalid username or password");
-    }
 
     return userFound;
   }
 
   async register(data: UserModelAttrs) {
-    const userFound = await this.searchByUser(data.username);
-
-    if (userFound) {
-      throw new Error("409|User already exists");
-    }
-
     const accountId = await new AccountModel().createAccount();
     const hashPassword = await hash(data.password, 10);
 

@@ -1,3 +1,4 @@
+import { compare } from "bcryptjs";
 import AuthHandler from "../auth/AuthHandler";
 import { userSchema } from "../config/zodSchemas";
 import UserModel from "../models/UserModel";
@@ -16,6 +17,12 @@ class UserService {
   }
 
   async register(data: UserModelAttrs) {
+    const userFound = await this.userModel.searchByUser(data.username);
+
+    if (userFound) {
+      throw new Error("409|User already exists");
+    }
+
     await this.userModel.register(data);
 
     return {
@@ -27,6 +34,15 @@ class UserService {
 
   async login(data: UserModelAttrs) {
     const userFound = await this.userModel.login(data);
+
+    const isValidPassword = await compare(
+      data.password,
+      userFound?.password || ""
+    );
+
+    if (!userFound || !isValidPassword) {
+      throw new Error("400|Invalid username or password");
+    }
 
     return {
       success: {
