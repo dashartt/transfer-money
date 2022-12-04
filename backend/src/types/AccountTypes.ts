@@ -4,7 +4,12 @@ export type AccountDetails = {
   accountId?: number;
 };
 
+export type DepositInput = {
+  accountId: number;
+  value: number;
+};
+
 export type DepositOutput = {
   accountId: number;
-  amount: number;
+  balance: number;
 };
