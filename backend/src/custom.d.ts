@@ -1,5 +1,4 @@
-import { JwtPayload } from "jsonwebtoken";
-import { AccountDetails } from "./types/AccountTypes";
+import { AccountDetails, DepositOutput } from "./types/AccountTypes";
 import { LoginSuccessNext } from "./types/ServerTypes";
 import {
   AccountForTransfer,
@@ -12,6 +11,7 @@ declare global {
     interface Request {
       loginSuccessData?: LoginSuccessNext;
       accountDetails?: AccountDetails;
+      depositOutput?: DepositOutput;
 
       tokenData?: UserToken;
       accountsForTransfer?: AccountForTransfer;
