@@ -23,6 +23,8 @@ router.patch(
   "/account/deposit",
   checkAuth,
   (req: Request, res: Response, next: NextFunction) =>
+    accountController.getAccountDetails(req, res, next),
+  (req: Request, res: Response, next: NextFunction) =>
     accountController.makeDeposit(req, res, next)
 );
 

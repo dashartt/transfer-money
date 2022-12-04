@@ -6,6 +6,7 @@ import {
   AccountsIdsForTransfer,
   TransferInput,
 } from "../types/TransactionTypes";
+import { UserToken } from "../types/UserTypes";
 
 class AccountController {
   private service;
@@ -26,9 +27,9 @@ class AccountController {
   }
 
   async getAccountDetails(req: Request, res: Response, next: NextFunction) {
-    const { token, username } = req.loginSuccessData as LoginSuccessNext;
+    const { username } = req.tokenData as UserToken;
 
-    const serviceOutput = await this.service.getAccountDetails(username || "");
+    const serviceOutput = await this.service.getAccountDetails(username);
 
     if (serviceOutput.fail) return next(serviceOutput.fail);
 
@@ -81,18 +82,18 @@ class AccountController {
 
   async makeDeposit(req: Request, res: Response, next: NextFunction) {
     const amount = req.body?.amount || 0;
+    const accountId = req.tokenData!.accountId;
 
-    const responseDeposit = await this.service.makeDeposit({
-      amount,
-      username: req?.tokenData?.username || "",
-    });
+    const serviceOutput = await this.service.makeDeposit({ amount, accountId });
 
-    if (responseDeposit?.fail) {
-      return next(responseDeposit.fail);
+    if (serviceOutput.fail) {
+      return next(serviceOutput.fail);
     }
 
+    const balance = serviceOutput.success!.data as number;
+
     return res.status(200).json({
-      balance: responseDeposit?.success?.data,
+      balance,
       message: "Successfully deposited",
     });
   }
