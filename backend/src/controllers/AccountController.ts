@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import AccountService from "../services/AccountService";
 import { AccountDetails } from "../types/AccountTypes";
+import { LoginSuccessNext } from "../types/ServerTypes";
 import {
   AccountsIdsForTransfer,
   TransferInput,
@@ -22,6 +23,21 @@ class AccountController {
     return res.status(200).json({
       balance: accountDetails.balance,
     });
+  }
+
+  async getAccountDetails(req: Request, res: Response, next: NextFunction) {
+    const { token, username } = req.loginSuccessData as LoginSuccessNext;
+
+    const serviceOutput = await this.service.getAccountDetails(username || "");
+
+    if (serviceOutput.fail) return next(serviceOutput.fail);
+
+    const { balance, accountId } = serviceOutput.success!
+      .data as AccountDetails;
+
+    req.accountDetails = { balance, accountId } as AccountDetails;
+
+    next();
   }
 
   async getAccountIdsToTransfer(

@@ -3,10 +3,10 @@ import AuthHandler from "../auth/AuthHandler";
 import { userSchema } from "../config/zodSchemas";
 import UserModel from "../models/UserModel";
 import {
-  FailInResponse,
-  ResponseOutput,
-  SuccessfulInResponse,
-} from "../types/ResponseTypes";
+  FailInService,
+  ServiceOutput,
+  SuccessfulInService,
+} from "../types/ServerTypes";
 import { UserModelAttrs } from "../types/UserTypes";
 
 class UserService {
@@ -20,16 +20,18 @@ class UserService {
     const userFound = await this.userModel.searchByUser(data.username);
 
     if (userFound) {
-      throw new Error("409|User already exists");
+      return {
+        fail: { message: "409|User already exists" },
+      } as ServiceOutput<undefined, FailInService>;
     }
 
     await this.userModel.register(data);
 
     return {
       success: {
-        data: true,
+        data: null,
       },
-    } as ResponseOutput<SuccessfulInResponse, undefined>;
+    } as ServiceOutput<SuccessfulInService, undefined>;
   }
 
   async login(data: UserModelAttrs) {
@@ -54,7 +56,7 @@ class UserService {
           username: userFound.username,
         },
       },
-    } as ResponseOutput<SuccessfulInResponse, undefined>;
+    } as ServiceOutput<SuccessfulInService, undefined>;
   }
 
   validateData(data: UserModelAttrs) {
@@ -64,14 +66,14 @@ class UserService {
       const errors = parsed.error.issues.map((error) => error.message);
       return {
         fail: { message: `400|${errors}` },
-      } as ResponseOutput<undefined, FailInResponse>;
+      } as ServiceOutput<undefined, FailInService>;
     }
 
     return {
       success: {
         data: true,
       },
-    } as ResponseOutput<SuccessfulInResponse, undefined>;
+    } as ServiceOutput<SuccessfulInService, undefined>;
   }
 }
 

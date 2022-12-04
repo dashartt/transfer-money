@@ -9,8 +9,14 @@ const userController = new UserController();
 const transactionController = new TransactionController();
 const accountController = new AccountController();
 
-router.post("/auth", (req: Request, res: Response, next: NextFunction) =>
-  userController.auth(req, res, next)
+router.post(
+  "/auth",
+  (req: Request, res: Response, next: NextFunction) =>
+    userController.auth(req, res, next),
+  (req: Request, res: Response, next: NextFunction) =>
+    accountController.getAccountDetails(req, res, next),
+  (req: Request, res: Response, next: NextFunction) =>
+    userController.afterLogin(req, res, next)
 );
 
 router.patch(
