@@ -82,19 +82,17 @@ class AccountModel {
     return balanceAfterDeposit;
   }
 
-  async makeTransfer(data: TransferOutput) {
-    const balanceBeforeCredit = await this.getBalance(data.creditedAccountId);
-    const balanceBeforeDebit = await this.getBalance(data.debitedAccountId);
+  async makeTransfer({
+    creditedAccountId,
+    debitedAccountId,
+    value,
+  }: TransferOutput) {
+    const balanceBeforeCredit = await this.getBalance(creditedAccountId);
+    const balanceBeforeDebit = await this.getBalance(debitedAccountId!);
 
-    await this.updateBalance(
-      data.creditedAccountId,
-      balanceBeforeCredit + data.value
-    );
+    await this.updateBalance(creditedAccountId, balanceBeforeCredit + value);
 
-    await this.updateBalance(
-      data.debitedAccountId,
-      balanceBeforeDebit - data.value
-    );
+    await this.updateBalance(debitedAccountId!, balanceBeforeDebit - value);
   }
 }
 

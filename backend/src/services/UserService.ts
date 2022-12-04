@@ -26,12 +26,6 @@ class UserService {
     }
 
     await this.userModel.register(data);
-
-    return {
-      success: {
-        data: null,
-      },
-    } as ServiceOutput<SuccessfulInService, undefined>;
   }
 
   async login(data: UserModelAttrs) {
