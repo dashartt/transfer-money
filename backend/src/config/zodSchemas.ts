@@ -13,7 +13,7 @@ export const userSchema = zod.object({
 });
 
 export const transactionSchema = zod.object({
-  debitedAccountId: zod.number(),
+  debitedAccountId: zod.number().optional(),
   creditedAccountId: zod.number(),
   value: zod
     .number()
@@ -22,9 +22,5 @@ export const transactionSchema = zod.object({
 });
 
 export const depositSchema = zod.object({
-  username: zod
-    .string()
-    .min(4, "username must be min 4 characteres")
-    .max(12, "username must be max 12 characteres"),
   amount: zod.number().min(1.0, "Minimum deposit amount is R$1"),
 });

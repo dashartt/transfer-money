@@ -1,5 +1,6 @@
 import { transactionSchema } from "../config/zodSchemas";
 import TransactionModel from "../models/TransactionModel";
+import { FailInService, ServiceOutput } from "../types/ServerTypes";
 import { TransferOutput } from "../types/TransactionTypes";
 import { formatTransactionHistory } from "../utils/formatDataFromDb";
 
@@ -12,16 +13,16 @@ class TransactionService {
 
   async registerTransfer({
     creditedAccountId,
-    debitedAccountId,
+    debitedAccountId = undefined,
     value,
   }: TransferOutput) {
-    const hasErrorData = this.validateData({
+    const serviceOutput = this.validateData({
       debitedAccountId,
       creditedAccountId,
       value,
     });
 
-    if (hasErrorData) return hasErrorData;
+    if (serviceOutput?.fail) return serviceOutput;
 
     await this.transactionModel.registerTransfer({
       debitedAccountId,
@@ -42,8 +43,11 @@ class TransactionService {
 
     if (!parsed.success) {
       const errors = parsed.error.issues.map((error) => error.message);
-      const errorMessage = { message: `400|${errors}` };
-      return errorMessage;
+      return {
+        fail: {
+          message: `400|${errors}`,
+        },
+      } as ServiceOutput<undefined, FailInService>;
     }
   }
 }

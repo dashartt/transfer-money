@@ -1,12 +1,12 @@
 import { depositSchema } from "../config/zodSchemas";
 import AccountModel from "../models/AccountModel";
-import { DepositInput } from "../types/AccountTypes";
+import { DepositInput, DepositOutput } from "../types/AccountTypes";
 
 import {
-  FailInResponse,
-  ResponseOutput,
-  SuccessfulInResponse,
-} from "../types/ResponseTypes";
+  FailInService,
+  ServiceOutput,
+  SuccessfulInService,
+} from "../types/ServerTypes";
 import { AccountForTransfer, TransferOutput } from "../types/TransactionTypes";
 
 class AccountService {
@@ -24,14 +24,14 @@ class AccountService {
         fail: {
           message: "404|Account not found ",
         },
-      } as ResponseOutput<undefined, FailInResponse>;
+      } as ServiceOutput<undefined, FailInService>;
     }
 
     return {
       success: {
         data: accountDetails,
       },
-    } as ResponseOutput<SuccessfulInResponse, undefined>;
+    } as ServiceOutput<SuccessfulInService, undefined>;
   }
 
   async getAccountIdsToTransfer({
@@ -50,15 +50,15 @@ class AccountService {
         fail: {
           message: "404|Sender and recipient account not found ",
         },
-      } as ResponseOutput<undefined, FailInResponse>;
+      } as ServiceOutput<undefined, FailInService>;
     } else if (!debitedAcc) {
       return {
         fail: { message: "404|Recipient account not found" },
-      } as ResponseOutput<undefined, FailInResponse>;
+      } as ServiceOutput<undefined, FailInService>;
     } else if (!creditedAcc) {
       return {
         fail: { message: "404|Recipient account not found" },
-      } as ResponseOutput<undefined, FailInResponse>;
+      } as ServiceOutput<undefined, FailInService>;
     }
 
     return {
@@ -68,7 +68,7 @@ class AccountService {
           creditedAccountId: creditedAcc?.id,
         },
       },
-    } as ResponseOutput<SuccessfulInResponse, undefined>;
+    } as ServiceOutput<SuccessfulInService, undefined>;
   }
 
   async validateBalance(accountId: number, transferAmount: number) {
@@ -78,62 +78,50 @@ class AccountService {
     if (!canTransfer) {
       return {
         fail: { message: "409|Insufficient balance" },
-      } as ResponseOutput<undefined, FailInResponse>;
+      } as ServiceOutput<undefined, FailInService>;
     }
 
-    return { success: { data: balanceValue } } as ResponseOutput<
-      SuccessfulInResponse | undefined
+    return { success: { data: balanceValue } } as ServiceOutput<
+      SuccessfulInService | undefined
     >;
   }
 
-  async makeDeposit({ amount, username }: DepositInput) {
-    const responseValidate = this.validateData({ amount, username });
+  async makeDeposit({ accountId, value }: DepositInput) {
+    const responseValidate = this.validateData(value);
 
-    if (responseValidate.fail) {
-      return responseValidate;
-    }
-
-    const responseAccountDetails = await this.getAccountDetails(username);
-
-    if (responseAccountDetails.fail) {
-      return responseAccountDetails;
-    }
-
-    const accountDetails = responseAccountDetails.success?.data as {
-      id: number;
-    };
+    if (responseValidate.fail) return responseValidate;
 
     const balanceAfterDeposit = await this.accountModel.makeDeposit({
-      amount,
-      accountId: accountDetails.id,
+      value,
+      accountId,
     });
 
     return {
       success: {
         data: balanceAfterDeposit,
       },
-    } as ResponseOutput<SuccessfulInResponse, undefined>;
+    } as ServiceOutput<SuccessfulInService, undefined>;
   }
 
   async makeTransfer(data: TransferOutput) {
     await this.accountModel.makeTransfer(data);
   }
 
-  validateData({ amount, username }: DepositInput) {
-    const parsedDeposit = depositSchema.safeParse({ amount, username });
+  validateData(amount: number) {
+    const parsedDeposit = depositSchema.safeParse({ amount });
 
     if (!parsedDeposit.success) {
       const errors = parsedDeposit.error.issues.map((error) => error.message);
       return {
         fail: { message: `400|${errors}` },
-      } as ResponseOutput<undefined, FailInResponse>;
+      } as ServiceOutput<undefined, FailInService>;
     }
 
     return {
       success: {
         data: true,
       },
-    } as ResponseOutput<SuccessfulInResponse, undefined>;
+    } as ServiceOutput<SuccessfulInService, undefined>;
   }
 }
 

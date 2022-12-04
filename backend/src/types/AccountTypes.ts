@@ -5,11 +5,11 @@ export type AccountDetails = {
 };
 
 export type DepositInput = {
-  username: string;
-  amount: number;
+  accountId: number;
+  value: number;
 };
 
 export type DepositOutput = {
   accountId: number;
-  amount: number;
+  balance: number;
 };
