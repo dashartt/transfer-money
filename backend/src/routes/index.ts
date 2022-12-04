@@ -25,7 +25,10 @@ router.patch(
   (req: Request, res: Response, next: NextFunction) =>
     accountController.getAccountDetails(req, res, next),
   (req: Request, res: Response, next: NextFunction) =>
-    accountController.makeDeposit(req, res, next)
+    accountController.makeDeposit(req, res, next),
+  (req: Request, res: Response, next: NextFunction) => {
+    transactionController.registerTransfer(req, res, next);
+  }
 );
 
 router.post(
