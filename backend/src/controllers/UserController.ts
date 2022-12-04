@@ -1,9 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import AccountService from "../services/AccountService";
 import UserService from "../services/UserService";
 import { AccountDetails } from "../types/AccountTypes";
-import { LoginServiceOutput, LoginSuccessNext } from "../types/ServerTypes";
-import { AuthedUserResponse } from "../types/UserTypes";
+import { LoginSuccessNext } from "../types/ServerTypes";
 
 class UserController {
   private service;
