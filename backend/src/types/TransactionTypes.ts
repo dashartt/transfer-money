@@ -4,7 +4,7 @@ export interface AccountForTransfer {
 }
 
 export interface AccountsIdsForTransfer {
-  debitedAccountId: number;
+  debitedAccountId?: number;
   creditedAccountId: number;
 }
 
