@@ -12,7 +12,9 @@ class TransactionModel {
     await this.prisma.transaction.create({
       data: {
         creditedAccountId: data.creditedAccountId,
-        debitedAccountId: data.debitedAccountId,
+        ...(data.debitedAccountId && {
+          debitedAccountId: data.debitedAccountId,
+        }),
         value: data.value,
         createdAt: new Date(),
       },

@@ -14,17 +14,18 @@ class TransactionController {
   }
 
   async registerTransfer(req: Request, res: Response, next: NextFunction) {
-    const { creditedAccountId, debitedAccountId } =
+    const { creditedAccountId, debitedAccountId = undefined } =
       req.accountsIdsForTransfer as AccountsIdsForTransfer;
+
     const { value } = req.body as TransferInput;
 
-    const hasError = await this.transactionService.registerTransfer({
+    const serviceOutput = await this.transactionService.registerTransfer({
       creditedAccountId,
       debitedAccountId,
       value,
     });
 
-    if (hasError) return next(hasError);
+    if (serviceOutput?.fail) return next(serviceOutput.fail);
 
     return res.status(200).json({ message: "Successful transfer" });
   }
