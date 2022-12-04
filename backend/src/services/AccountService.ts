@@ -1,6 +1,6 @@
 import { depositSchema } from "../config/zodSchemas";
 import AccountModel from "../models/AccountModel";
-import { DepositOutput } from "../types/AccountTypes";
+import { DepositInput, DepositOutput } from "../types/AccountTypes";
 
 import {
   FailInService,
@@ -86,13 +86,13 @@ class AccountService {
     >;
   }
 
-  async makeDeposit({ accountId, amount }: DepositOutput) {
-    const responseValidate = this.validateData(amount);
+  async makeDeposit({ accountId, value }: DepositInput) {
+    const responseValidate = this.validateData(value);
 
     if (responseValidate.fail) return responseValidate;
 
     const balanceAfterDeposit = await this.accountModel.makeDeposit({
-      amount,
+      value,
       accountId,
     });
 
