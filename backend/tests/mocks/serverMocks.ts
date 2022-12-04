@@ -20,3 +20,14 @@ export const loginFailedUserResponse = {
   status: 400,
   message: "Invalid username or password",
 };
+
+export const accountDetailsRequestKey = {
+  balance: 0,
+  username: "dashartx",
+  accountId: 1,
+};
+
+export const loginSuccessRequestKey = {
+  username: "dashartx",
+  token: "fake_token",
+};
