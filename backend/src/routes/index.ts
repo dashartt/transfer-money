@@ -1,59 +1,48 @@
-import { NextFunction, Request, Response, Router } from "express";
+import { Router } from "express";
 import UserController from "../controllers/UserController";
 import TransactionController from "../controllers/TransactionController";
 import checkAuth from "../middlewares/CheckAuth";
 import AccountController from "../controllers/AccountController";
 
 const router = Router();
+
+// initialize controllers
 const userController = new UserController();
 const transactionController = new TransactionController();
 const accountController = new AccountController();
 
+// register and login endpoint
 router.post(
   "/auth",
-  (req: Request, res: Response, next: NextFunction) =>
-    userController.auth(req, res, next),
-  (req: Request, res: Response, next: NextFunction) =>
-    accountController.getAccountDetails(req, res, next),
-  (req: Request, res: Response, next: NextFunction) =>
-    userController.afterLogin(req, res, next)
+  userController.auth.bind(userController),
+  accountController.getAccountDetails.bind(accountController),
+  userController.afterLogin.bind(userController)
 );
 
+// deposit endpoint
 router.patch(
   "/account/deposit",
   checkAuth,
-  (req: Request, res: Response, next: NextFunction) =>
-    accountController.getAccountDetails(req, res, next),
-  (req: Request, res: Response, next: NextFunction) =>
-    accountController.makeDeposit(req, res, next),
-  (req: Request, res: Response, next: NextFunction) => {
-    transactionController.registerTransfer(req, res, next);
-  }
+  accountController.getAccountDetails.bind(accountController),
+  accountController.makeDeposit.bind(accountController),
+  transactionController.registerTransfer.bind(transactionController)
 );
 
+// transfer endpoint
 router.post(
   "/transactions/transfer",
   checkAuth,
-  (req: Request, res: Response, next: NextFunction) => {
-    accountController.getAccountIdsToTransfer(req, res, next);
-  },
-  (req: Request, res: Response, next: NextFunction) => {
-    accountController.validateBalance(req, res, next);
-  },
-  (req: Request, res: Response, next: NextFunction) => {
-    accountController.makeTransfer(req, res, next);
-  },
-  (req: Request, res: Response, next: NextFunction) => {
-    transactionController.registerTransfer(req, res, next);
-  }
+  accountController.getAccountIdsToTransfer.bind(accountController),
+  accountController.validateBalance.bind(accountController),
+  accountController.makeTransfer.bind(accountController),
+  transactionController.registerTransfer.bind(transactionController)
 );
 
+// get transaction history endpoint
 router.get(
   "/transactions/history",
   checkAuth,
-  (req: Request, res: Response, next: NextFunction) => {
-    transactionController.getTransactionHistory(req, res, next);
-  }
+  transactionController.getTransactionHistory.bind(transactionController)
 );
 
 export default router;
