@@ -15,7 +15,7 @@ class UserController {
 
     const serviceOutput = this.service.validateData(req.body);
 
-    if (serviceOutput.fail) return next(serviceOutput.fail);
+    if (serviceOutput?.fail) return next(serviceOutput.fail);
 
     if (authOption === "register") {
       await this.register(req, res, next);

@@ -62,12 +62,6 @@ class UserService {
         fail: { message: `400|${errors}` },
       } as ServiceOutput<undefined, FailInService>;
     }
-
-    return {
-      success: {
-        data: true,
-      },
-    } as ServiceOutput<SuccessfulInService, undefined>;
   }
 }
 
