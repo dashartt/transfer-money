@@ -20,31 +20,33 @@ import { useRecoilState } from 'recoil';
 import { balanceState } from '../../recoil/atoms';
 import { requestDepositAmount } from '../../services/api';
 import toastConfig from '../../utils/toastConfig';
+import FormatMessageApi from '../messages/FormatMessageApi';
 
 function Deposit() {
   const [_balance, setBalance] = useRecoilState(balanceState);
   const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose: onCloseDepositModal } = useDisclosure();
   const depositRef = useRef<HTMLInputElement>(null);
 
   const onSubmit: FormEventHandler = (event) => {
     event.preventDefault();
+    const depositAmount = Number(depositRef.current?.value);
 
     requestDepositAmount({
-      amount: Number(depositRef.current?.value),
+      value: depositAmount,
     }).then((data) => {
-      if (data.message.includes('deposited')) {
+      if (data?.message?.includes('Successful transfer')) {
+        setBalance((prev) => prev + depositAmount);
+
+        onCloseDepositModal();
         toast({
           ...toastConfig,
           description: data?.message,
         });
-        console.log(data.balance);
-
-        setBalance(data.balance);
       } else {
         toast({
           ...toastConfig,
-          description: data?.message,
+          description: data?.message || FormatMessageApi({ messageList: data.errors }),
         });
       }
     });
@@ -61,7 +63,7 @@ function Deposit() {
       >
         Deposit
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onCloseDepositModal}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Deposit</ModalHeader>
