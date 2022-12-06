@@ -41,7 +41,7 @@ export const invalidLoginServiceOutput = {
 };
 
 export const invalidGetBalanceServiceOutput = {
-  fail: { message: "404|Account not found " },
+  fail: { message: "404|Account not found" },
 };
 
 export const invalidTransferServiceOutput = {
@@ -49,7 +49,7 @@ export const invalidTransferServiceOutput = {
     message: "404|Debit account not found",
   },
   withInvalidCreditAccountId: {
-    message: "404|Credit account not foun",
+    message: "404|Credit account not found",
   },
   withBothInvaliAccountIds: {
     message: "404|Debit and credit account not found",
@@ -69,4 +69,10 @@ export const afterDepositResponse = {
 export const transaferResponse = {
   status: 200,
   message: "Successful transfer",
+};
+
+export const invalidDepositServiceOutput = {
+  fail: {
+    message: "Minimum deposit amount is R$1",
+  },
 };

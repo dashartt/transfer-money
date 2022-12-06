@@ -48,7 +48,7 @@ class AccountService {
     if (!debitedAcc && !creditedAcc) {
       return {
         fail: {
-          message: "404|Debit and credit account not found ",
+          message: "404|Debit and credit account not found",
         },
       } as ServiceOutput<undefined, FailInService>;
     } else if (!debitedAcc) {
