@@ -1,4 +1,4 @@
-import { Box, Button, Heading, HStack, Text, VStack } from '@chakra-ui/react';
+import { Box, Heading, HStack, Text, VStack } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
