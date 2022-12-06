@@ -15,12 +15,13 @@ class AccountController {
 
   async getBalance(req: Request, res: Response, next: NextFunction) {
     const username = req.params?.username || "";
-    const accountDetails = (await this.service.getAccountDetails(
-      username
-    )) as AccountDetails;
+    const accountDetails = await this.service.getAccountDetails(username);
 
+    if (accountDetails.fail) return next(accountDetails.fail);
+
+    const { balance } = accountDetails.success?.data as AccountDetails;
     return res.status(200).json({
-      balance: accountDetails.balance,
+      balance,
     });
   }
 

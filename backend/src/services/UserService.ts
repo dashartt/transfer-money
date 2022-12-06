@@ -26,12 +26,6 @@ class UserService {
     }
 
     await this.userModel.register(data);
-
-    return {
-      success: {
-        data: null,
-      },
-    } as ServiceOutput<SuccessfulInService, undefined>;
   }
 
   async login(data: UserModelAttrs) {
@@ -43,7 +37,9 @@ class UserService {
     );
 
     if (!userFound || !isValidPassword) {
-      throw new Error("400|Invalid username or password");
+      return {
+        fail: { message: "400|Invalid username or password" },
+      } as ServiceOutput<undefined, FailInService>;
     }
 
     return {
@@ -68,12 +64,6 @@ class UserService {
         fail: { message: `400|${errors}` },
       } as ServiceOutput<undefined, FailInService>;
     }
-
-    return {
-      success: {
-        data: true,
-      },
-    } as ServiceOutput<SuccessfulInService, undefined>;
   }
 }
 

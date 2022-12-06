@@ -15,7 +15,7 @@ class UserController {
 
     const serviceOutput = this.service.validateData(req.body);
 
-    if (serviceOutput.fail) return next(serviceOutput.fail);
+    if (serviceOutput?.fail) return next(serviceOutput.fail);
 
     if (authOption === "register") {
       await this.register(req, res, next);
@@ -34,7 +34,7 @@ class UserController {
     next();
   }
 
-  async afterLogin(req: Request, res: Response, next: NextFunction) {
+  async afterLogin(req: Request, res: Response) {
     const { balance } = req.accountDetails as AccountDetails;
     const { token, username } = req.loginSuccessData as LoginSuccessNext;
 
@@ -42,14 +42,14 @@ class UserController {
       username,
       token,
       balance,
-      message: "Successfully authenticated user",
+      message: "User authenticated successfully",
     });
   }
 
   async register(req: Request, res: Response, next: NextFunction) {
     const serviceOutput = await this.service.register(req.body);
 
-    if (serviceOutput.fail) return next(serviceOutput.fail);
+    if (serviceOutput?.fail) return next(serviceOutput.fail);
 
     return res.status(201).json({
       message:
