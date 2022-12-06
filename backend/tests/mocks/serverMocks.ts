@@ -39,3 +39,29 @@ export const invalidRegisterServiceOutput = {
 export const invalidLoginServiceOutput = {
   fail: { message: "400|Invalid username or password" },
 };
+
+export const invalidGetBalanceServiceOutput = {
+  fail: { message: "404|Account not found " },
+};
+
+export const invalidTransferServiceOutput = {
+  withInvalidDebitedAccountId: {
+    message: "404|Debit account not found",
+  },
+  withInvalidCreditAccountId: {
+    message: "404|Credit account not foun",
+  },
+  withBothInvaliAccountIds: {
+    message: "404|Debit and credit account not found",
+  },
+};
+
+export const invalidValidateBalanceServiceOutput = {
+  message: "409|Insufficient balance",
+};
+
+export const afterDepositResponse = {
+  status: 200,
+  balance: 100,
+  message: "Successfully deposited",
+};
