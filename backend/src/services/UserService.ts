@@ -37,7 +37,9 @@ class UserService {
     );
 
     if (!userFound || !isValidPassword) {
-      throw new Error("400|Invalid username or password");
+      return {
+        fail: { message: "400|Invalid username or password" },
+      } as ServiceOutput<undefined, FailInService>;
     }
 
     return {
