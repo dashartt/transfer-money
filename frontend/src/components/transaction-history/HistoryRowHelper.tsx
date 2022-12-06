@@ -2,6 +2,7 @@ import { Td } from '@chakra-ui/react';
 
 import { AuthedUserDTO } from '../../types/RequestData';
 import { TransactionDTO } from '../../types/Transaction';
+import formatValue from '../../utils/formatValue';
 
 type Props = {
   transaction: TransactionDTO;
@@ -9,31 +10,27 @@ type Props = {
 
 function HistoryRowHelper({ transaction }: Props) {
   const user = JSON.parse(localStorage.getItem('user') || '') as AuthedUserDTO;
+  const { creditedAccount, debitedAccount, inCome, outCome, date } = transaction;
 
-  const isDebit = user.username === transaction.debitedAccount;
-  const DebitAmount = <Td color="red.500">{`- R$${transaction.inCome}`}</Td>;
-  const CreditAmount = <Td color="green.500">{`+ R$${transaction.inCome}`}</Td>;
+  const isDebit = user.username === debitedAccount;
+  const setColor = isDebit ? 'red.500' : 'green.500';
+  const setCurrencySign = isDebit ? '- R$' : '+ R$';
 
-  const DebitDescription = <Td>Pix to {transaction.creditedAccount}</Td>;
-  const CreditDescription = <Td>Pix from {transaction.debitedAccount}</Td>;
+  const isDeposit = !debitedAccount;
+
+  const DepositDescription = <Td>Deposit to {creditedAccount}</Td>;
+  const DebitDescription = <Td>Pix to {creditedAccount}</Td>;
+  const CreditDescription = <Td>Pix from {debitedAccount}</Td>;
 
   return (
     <>
-      <Td>{transaction.date}</Td>
-      {isDebit && (
-        <>
-          {DebitDescription}
-          {DebitAmount}
-        </>
-      )}
+      <Td>{date}</Td>
 
-      {!isDebit && (
-        <>
-          {CreditDescription}
-          {CreditAmount}
-        </>
-      )}
-      <Td>R${transaction.outCome}</Td>
+      {isDebit && DebitDescription}
+      {!isDebit && (isDeposit ? DepositDescription : CreditDescription)}
+
+      <Td color={setColor}>{` ${setCurrencySign}${formatValue(inCome)}`}</Td>
+      <Td>R${formatValue(outCome)}</Td>
     </>
   );
 }
