@@ -31,3 +31,11 @@ export const loginSuccessRequestKey = {
   username: "dashartx",
   token: "fake_token",
 };
+
+export const invalidRegisterServiceOutput = {
+  fail: { message: "409|User already exists" },
+};
+
+export const invalidLoginServiceOutput = {
+  fail: { message: "400|Invalid username or password" },
+};
