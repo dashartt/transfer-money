@@ -16,5 +16,5 @@ export type AuthedUserDTO = {
 };
 
 export type DepositDTO = {
-  amount: number;
+  value: number;
 };
