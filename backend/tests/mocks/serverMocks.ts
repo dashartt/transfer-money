@@ -65,3 +65,8 @@ export const afterDepositResponse = {
   balance: 100,
   message: "Successfully deposited",
 };
+
+export const transaferResponse = {
+  status: 200,
+  message: "Successful transfer",
+};
