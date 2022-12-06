@@ -29,7 +29,7 @@ class TransactionModel {
       ON acc.id = tr.creditedAccountId OR acc.id = tr.debitedAccountId
       INNER JOIN User as us1
       ON us1.accountId = tr.creditedAccountId
-      INNER JOIN User as us2
+      LEFT JOIN User as us2
       ON us2.accountId = tr.debitedAccountId
       WHERE ${accountId} = tr.creditedAccountId OR ${accountId} = tr.debitedAccountId
     `) as TransactionOutput[];
