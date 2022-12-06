@@ -22,7 +22,7 @@ class AccountService {
     if (!accountDetails) {
       return {
         fail: {
-          message: "404|Account not found ",
+          message: "404|Account not found",
         },
       } as ServiceOutput<undefined, FailInService>;
     }
@@ -48,16 +48,16 @@ class AccountService {
     if (!debitedAcc && !creditedAcc) {
       return {
         fail: {
-          message: "404|Sender and recipient account not found ",
+          message: "404|Debit and credit account not found ",
         },
       } as ServiceOutput<undefined, FailInService>;
     } else if (!debitedAcc) {
       return {
-        fail: { message: "404|Recipient account not found" },
+        fail: { message: "404|Debit account not found" },
       } as ServiceOutput<undefined, FailInService>;
     } else if (!creditedAcc) {
       return {
-        fail: { message: "404|Recipient account not found" },
+        fail: { message: "404|Credit account not found" },
       } as ServiceOutput<undefined, FailInService>;
     }
 
