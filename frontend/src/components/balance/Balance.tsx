@@ -4,6 +4,7 @@ import { useRecoilState } from 'recoil';
 
 import { balanceState } from '../../recoil/atoms';
 import { AuthedUserDTO } from '../../types/RequestData';
+import formatValue from '../../utils/formatValue';
 import LocalStorage from '../../utils/LocalStorage';
 import Deposit from './Deposit';
 
@@ -25,7 +26,7 @@ export default function Balance() {
           <Deposit />
         </HStack>
         <Text alignSelf="flex-start" fontSize="1.4rem" fontWeight="bold">
-          {`R$${balance}`}
+          {`R$${formatValue(balance)}`}
         </Text>
       </VStack>
     </Box>
