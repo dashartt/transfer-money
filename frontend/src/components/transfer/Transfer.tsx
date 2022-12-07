@@ -8,31 +8,37 @@ import {
   Stack,
   useToast,
 } from '@chakra-ui/react';
-import { FormEventHandler, useContext, useRef } from 'react';
+import { FormEventHandler, useRef } from 'react';
 import { RiMoneyDollarCircleLine } from 'react-icons/ri';
 import { useRecoilState } from 'recoil';
 
-import { balanceState } from '../../recoil/atoms';
-import { requestTransfer } from '../../services/api';
+import { balanceState, transactionHistoryState } from '../../recoil/atoms';
+import { requestTransactionHistory, requestTransfer } from '../../services/api';
 import { AuthedUserDTO } from '../../types/RequestData';
+import LocalStorage from '../../utils/LocalStorage';
 import toastConfig from '../../utils/toastConfig';
 import FormatMessageApi from '../messages/FormatMessageApi';
 
 export default function Transfer() {
-  const [_balance, setBalance] = useRecoilState(balanceState);
+  const [, setBalance] = useRecoilState(balanceState);
+  const [, setTransactions] = useRecoilState(transactionHistoryState);
 
   const toast = useToast();
   const ownerCreditAccountRef = useRef<HTMLInputElement>(null);
   const amountRef = useRef<HTMLInputElement>(null);
 
+  const onTransferUpdateHistory = () =>
+    requestTransactionHistory().then((data) => setTransactions(data));
+
   const onSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
     const authedUser = JSON.parse(localStorage.getItem('user') || '') as AuthedUserDTO;
+    const amount = Number(amountRef.current?.value) || 0.01;
 
     requestTransfer({
       debitedAccount: authedUser.username,
       creditedAccount: ownerCreditAccountRef.current?.value || '',
-      value: Number(amountRef.current?.value) || 0.01,
+      value: amount,
     }).then((data) => {
       if (data?.message === 'Successful transfer') {
         toast({
@@ -40,24 +46,27 @@ export default function Transfer() {
           description: data?.message,
         });
 
-        const balanceAfterTransfer =
-          authedUser.balance - Number(amountRef.current?.value);
+        setBalance((prev) => {
+          const currentBalance = prev - amount;
 
-        setBalance(balanceAfterTransfer);
-
-        localStorage.setItem(
-          'user',
-          JSON.stringify({
+          LocalStorage.set('user', {
             ...authedUser,
-            balance: balanceAfterTransfer,
-          }),
-        );
+            balance: currentBalance,
+          });
+
+          return currentBalance;
+        });
+
+        onTransferUpdateHistory();
       } else {
         toast({
           ...toastConfig,
           description: <FormatMessageApi messageList={data.errors} />,
         });
       }
+
+      ownerCreditAccountRef.current!.value = '';
+      amountRef.current!.value = '';
     });
   };
 
@@ -72,12 +81,14 @@ export default function Transfer() {
         <HStack>
           <Input
             placeholder="username"
+            w="10em"
             ref={ownerCreditAccountRef}
             borderColor="main.green"
             _focus={{ borderColor: 'white ' }}
           />
           <Input
             placeholder="value"
+            w="7em"
             ref={amountRef}
             borderColor="main.green"
             _focus={{ borderColor: 'white ' }}

@@ -17,16 +17,20 @@ import {
 import { FormEventHandler, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 
-import { balanceState } from '../../recoil/atoms';
-import { requestDepositAmount } from '../../services/api';
+import { balanceState, transactionHistoryState } from '../../recoil/atoms';
+import { requestDepositAmount, requestTransactionHistory } from '../../services/api';
 import toastConfig from '../../utils/toastConfig';
 import FormatMessageApi from '../messages/FormatMessageApi';
 
 function Deposit() {
-  const [_balance, setBalance] = useRecoilState(balanceState);
+  const [, setTransactions] = useRecoilState(transactionHistoryState);
+  const [, setBalance] = useRecoilState(balanceState);
   const toast = useToast();
   const { isOpen, onOpen, onClose: onCloseDepositModal } = useDisclosure();
   const depositRef = useRef<HTMLInputElement>(null);
+
+  const onTransferUpdateHistory = () =>
+    requestTransactionHistory().then((data) => setTransactions(data));
 
   const onSubmit: FormEventHandler = (event) => {
     event.preventDefault();
@@ -37,8 +41,9 @@ function Deposit() {
     }).then((data) => {
       if (data?.message?.includes('Successful transfer')) {
         setBalance((prev) => prev + depositAmount);
-
         onCloseDepositModal();
+        onTransferUpdateHistory();
+
         toast({
           ...toastConfig,
           description: data?.message,
