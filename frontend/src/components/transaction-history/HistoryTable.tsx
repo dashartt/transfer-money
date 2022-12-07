@@ -11,7 +11,6 @@ function HistoryTable() {
             <Th>Date</Th>
             <Th>Description</Th>
             <Th>Income</Th>
-            <Th>Outcome</Th>
           </Tr>
         </Thead>
         <HistoryRow />
