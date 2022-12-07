@@ -1,13 +1,14 @@
-import { Tbody, Td, Text, Tr } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { Tbody, Tr } from '@chakra-ui/react';
+import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
 
+import { transactionHistoryState } from '../../recoil/atoms';
 import { requestTransactionHistory } from '../../services/api';
-import { TransactionDTO } from '../../types/Transaction';
 import HistoryRowHelper from './HistoryRowHelper';
 
 function HistoryRow() {
-  const [transactions, setTransactions] = useState<TransactionDTO[]>([]);
+  const [transactions, setTransactions] = useRecoilState(transactionHistoryState);
 
   useEffect(() => {
     requestTransactionHistory().then((data) => {
@@ -22,10 +23,6 @@ function HistoryRow() {
           <HistoryRowHelper transaction={transaction} />
         </Tr>
       ))}
-
-      {transactions.length === 0 && (
-        <Text>Transfers linked to this account have not yet occurred</Text>
-      )}
     </Tbody>
   );
 }
