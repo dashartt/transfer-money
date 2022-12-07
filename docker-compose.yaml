@@ -23,8 +23,10 @@ services:
     environment:
       - DATABASE_URL=mysql://root:123456@database:3306/transfer_money
       - API_PORT=3001
+      - JWT_KEY=d21@sd*2sd
     networks:
       - internal_network
+    restart: always
   database:
     image: mysql:8.0.21
     container_name: database
