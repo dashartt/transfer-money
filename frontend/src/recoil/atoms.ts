@@ -9,3 +9,8 @@ export const authFormState = atom({
   key: 'tabIndex',
   default: 0,
 });
+
+export const transactionHistoryState = atom({
+  key: 'transactionHistoryIndex',
+  default: [],
+});
