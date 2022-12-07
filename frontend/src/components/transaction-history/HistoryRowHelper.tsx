@@ -10,7 +10,7 @@ type Props = {
 
 function HistoryRowHelper({ transaction }: Props) {
   const user = JSON.parse(localStorage.getItem('user') || '') as AuthedUserDTO;
-  const { creditedAccount, debitedAccount, inCome, outCome, date } = transaction;
+  const { creditedAccount, debitedAccount, inCome, date } = transaction;
 
   const isDebit = user.username === debitedAccount;
   const setColor = isDebit ? 'red.500' : 'green.500';
@@ -30,7 +30,6 @@ function HistoryRowHelper({ transaction }: Props) {
       {!isDebit && (isDeposit ? DepositDescription : CreditDescription)}
 
       <Td color={setColor}>{` ${setCurrencySign}${formatValue(inCome)}`}</Td>
-      <Td>R${formatValue(outCome)}</Td>
     </>
   );
 }
