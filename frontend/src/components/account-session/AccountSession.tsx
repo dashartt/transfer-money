@@ -16,7 +16,7 @@ export default function AccountSession() {
   }, []);
 
   const logOut = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     navigate('/auth');
   };
 
