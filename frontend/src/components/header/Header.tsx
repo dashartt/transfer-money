@@ -5,7 +5,14 @@ import Balance from '../balance/Balance';
 
 export default function Header() {
   return (
-    <Box as="header" bg="gray.200">
+    <Box
+      as="header"
+      bg="gray.200"
+      position="fixed"
+      w="full"
+      zIndex={2}
+      borderBottom="1px solid #1A202C"
+    >
       <Stack
         direction={{ base: 'column', md: 'row' }}
         p="4"
