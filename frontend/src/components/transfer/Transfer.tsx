@@ -76,7 +76,7 @@ export default function Transfer() {
   return (
     <Box
       bg="gray.200"
-      mt={{ base: '5em', lg: '0em' }}
+      mt={{ base: '15em', lg: '0em' }}
       padding="2em"
       maxW="fit-content"
       border="1px solid black"
