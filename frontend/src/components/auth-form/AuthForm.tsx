@@ -89,9 +89,10 @@ export default function AuthForm({ authType }: Props) {
 
         <Button
           type="submit"
-          _active={{ bg: 'main.lightGreen' }}
-          _hover={{ bg: 'main.lightGreen' }}
-          backgroundColor="main.green"
+          _active={{ bg: 'gray.800', color: 'gray.200', border: '1px solid white' }}
+          _hover={{ bg: 'gray.800', color: 'gray.200', border: '1px solid white' }}
+          backgroundColor="gray.200"
+          color="gray.800"
           width="full"
         >
           {authType == 'register' ? 'Register' : 'Enter'}
