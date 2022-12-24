@@ -32,6 +32,7 @@ class TransactionModel {
       LEFT JOIN User as us2
       ON us2.accountId = tr.debitedAccountId
       WHERE ${accountId} = tr.creditedAccountId OR ${accountId} = tr.debitedAccountId
+      ORDER BY tr.createdAt DESC
     `) as TransactionOutput[];
 
     return transactionHistory;
