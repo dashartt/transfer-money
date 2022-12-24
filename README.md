@@ -4,7 +4,11 @@
 
 Aplicação full-stack com docker com a proposta de um sistema semelhante a um sistema bancário, onde é possível depositar na conta para obter saldo e transferir dinheiro para outros usuários cadastrados no sistema
 
-<!-- ![alt text](https://raw.githubusercontent.com/abnerferreiradesousa/app-transferDIN/main/images/app.png) -->
+
+Auth page             |  Home page
+:-------------------------:|:-------------------------:
+![](https://github.com/jonatasqueirozlima/transfer-money/blob/main/assets/Transfer-Money-Img1.png)  |  ![](https://github.com/jonatasqueirozlima/transfer-money/blob/main/assets/Transfer-Money-Img2.png)
+
 
 <details>
 <summary><strong> Tecnologias utilizadas </strong></summary>
@@ -107,7 +111,9 @@ Backend:
 3. Acessar a seguinte URL: <br/>
   http://localhost:3000/
   - Caso queira testar a API, basta acessar o tópico <i>"Como usar cada rota?".</i>
-
+4. Para visualizar os testes: <br/>
+Esteja com a aplicação Up com o docker-compose e no diretório /backend execute: <code>npm test </code> <br/>
+Para ver o coverage do teste, execute: <code>npm test -- --coverage </code>
 </details>
 
 <details>
