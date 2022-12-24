@@ -99,8 +99,8 @@ export default function Transfer() {
                 placeholder="username"
                 w="10em"
                 ref={ownerCreditAccountRef}
-                borderColor="gray.800"
-                _focus={{ borderColor: 'white ' }}
+                bg="gray.800"
+                color="gray.200"
               />
             </FormControl>
             <FormControl>
@@ -109,15 +109,15 @@ export default function Transfer() {
                 placeholder="value"
                 w="7em"
                 ref={amountRef}
-                borderColor="gray.800"
-                _focus={{ borderColor: 'white ' }}
+                bg="gray.800"
+                color="gray.200"
                 type="number"
               />
             </FormControl>
             <Button
               _active={{ backgroundColor: 'gray.500' }}
               _hover={{ backgroundColor: 'gray.500' }}
-              color="white"
+              color="gray.200"
               alignSelf={{ base: 'flex-start', lg: 'flex-end' }}
               px="2em"
               bgColor="gray.800"

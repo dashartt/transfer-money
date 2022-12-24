@@ -60,7 +60,7 @@ function Deposit() {
   return (
     <>
       <Button
-        color="white"
+        color="gray.200"
         bg="gray.800"
         _active={{ backgroundColor: 'gray.500' }}
         _hover={{ backgroundColor: 'gray.500' }}

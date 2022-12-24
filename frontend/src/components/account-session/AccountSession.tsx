@@ -34,7 +34,7 @@ export default function AccountSession() {
         _hover={{ backgroundColor: 'gray.500' }}
         bgColor="gray.800"
         alignSelf="flex-start"
-        color="white"
+        color="gray.200"
         onClick={logOut}
       >
         Logout
