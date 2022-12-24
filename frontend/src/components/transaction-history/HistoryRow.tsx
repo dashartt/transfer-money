@@ -4,17 +4,10 @@ import { useRecoilState } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
 
 import { transactionHistoryState } from '../../recoil/atoms';
-import { requestTransactionHistory } from '../../services/api';
 import HistoryRowHelper from './HistoryRowHelper';
 
 function HistoryRow() {
-  const [transactions, setTransactions] = useRecoilState(transactionHistoryState);
-
-  useEffect(() => {
-    requestTransactionHistory().then((data) => {
-      setTransactions(data);
-    });
-  }, []);
+  const [transactions] = useRecoilState(transactionHistoryState);
 
   return (
     <Tbody>

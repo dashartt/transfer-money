@@ -1,11 +1,14 @@
 import {
+  Box,
   Button,
   chakra,
-  Heading,
+  FormControl,
+  FormLabel,
   HStack,
   Icon,
   Input,
   Stack,
+  Text,
   useToast,
 } from '@chakra-ui/react';
 import { FormEventHandler, useRef } from 'react';
@@ -71,41 +74,60 @@ export default function Transfer() {
   };
 
   return (
-    <chakra.form onSubmit={onSubmit}>
-      <Stack direction={{ base: 'column', md: 'row' }} justifyContent="space-between">
-        <HStack>
+    <Box
+      bg="gray.200"
+      mt={{ base: '5em', lg: '0em' }}
+      padding="2em"
+      maxW="fit-content"
+      border="1px solid black"
+    >
+      <Stack direction={{ base: 'column', lg: 'row' }} justifyContent="space-between">
+        <HStack alignItems="center" mr="2em">
           <Icon as={RiMoneyDollarCircleLine} />
-          <Heading as="h1">Transfer</Heading>
+          <Text fontSize="4xl">Transfer</Text>
         </HStack>
 
-        <HStack>
-          <Input
-            placeholder="username"
-            w="10em"
-            ref={ownerCreditAccountRef}
-            borderColor="main.green"
-            _focus={{ borderColor: 'white ' }}
-          />
-          <Input
-            placeholder="value"
-            w="7em"
-            ref={amountRef}
-            borderColor="main.green"
-            _focus={{ borderColor: 'white ' }}
-            type="number"
-          />
-          <Button
-            _active={{ backgroundColor: 'main.gren' }}
-            _hover={{ backgroundColor: 'main.gren', color: 'black' }}
-            alignSelf="flex-end"
-            color="white"
-            bgColor="main.green"
-            type="submit"
+        <chakra.form onSubmit={onSubmit}>
+          <Stack
+            direction={{ base: 'column', lg: 'row' }}
+            alignItems="center"
+            w="fit-content"
           >
-            Send
-          </Button>
-        </HStack>
+            <FormControl>
+              <FormLabel w="max-content">Who will you transfer to?</FormLabel>
+              <Input
+                placeholder="username"
+                w="10em"
+                ref={ownerCreditAccountRef}
+                borderColor="gray.800"
+                _focus={{ borderColor: 'white ' }}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Transfer amount</FormLabel>
+              <Input
+                placeholder="value"
+                w="7em"
+                ref={amountRef}
+                borderColor="gray.800"
+                _focus={{ borderColor: 'white ' }}
+                type="number"
+              />
+            </FormControl>
+            <Button
+              _active={{ backgroundColor: 'gray.500' }}
+              _hover={{ backgroundColor: 'gray.500' }}
+              color="white"
+              alignSelf={{ base: 'flex-start', lg: 'flex-end' }}
+              px="2em"
+              bgColor="gray.800"
+              type="submit"
+            >
+              Send
+            </Button>
+          </Stack>
+        </chakra.form>
       </Stack>
-    </chakra.form>
+    </Box>
   );
 }

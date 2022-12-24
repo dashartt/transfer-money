@@ -61,32 +61,41 @@ function Deposit() {
     <>
       <Button
         color="white"
-        bg="main.green"
-        _active={{ backgroundColor: 'main.gren' }}
-        _hover={{ backgroundColor: 'main.gren', color: 'black' }}
+        bg="gray.800"
+        _active={{ backgroundColor: 'gray.500' }}
+        _hover={{ backgroundColor: 'gray.500' }}
         onClick={onOpen}
       >
         Deposit
       </Button>
       <Modal isOpen={isOpen} onClose={onCloseDepositModal}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent bg="gray.200">
           <ModalHeader>Deposit</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <chakra.form onSubmit={onSubmit} paddingBottom="2em">
               <FormControl>
-                <HStack>
-                  <FormLabel>Amount</FormLabel>
+                <HStack justifyContent="flex-end">
+                  <FormLabel fontWeight="bold" w="full" fontSize="lg">
+                    Amount value
+                  </FormLabel>
                   <Input
                     autoComplete="off"
                     ref={depositRef}
-                    _focus={{ bg: '#e2e8f0', color: 'black' }}
-                    name="username"
+                    bg="gray.800"
                     color="white"
-                    type="text"
+                    name="username"
+                    type="number"
                   />
-                  <Button type="submit" colorScheme="green">
+                  <Button
+                    px="2em"
+                    _active={{ backgroundColor: 'gray.500' }}
+                    _hover={{ backgroundColor: 'gray.500' }}
+                    bgColor="gray.800"
+                    type="submit"
+                    color="white"
+                  >
                     Confirm
                   </Button>
                 </HStack>

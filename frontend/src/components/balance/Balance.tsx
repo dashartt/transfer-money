@@ -17,18 +17,13 @@ export default function Balance() {
   }, []);
 
   return (
-    <Box>
-      <VStack justifyContent="space-between">
-        <HStack w="full">
-          <Heading alignSelf={{ base: 'flex-start', lg: 'baseline' }} as="h1">
-            Balance
-          </Heading>
-          <Deposit />
-        </HStack>
-        <Text alignSelf="flex-start" fontSize="1.4rem" fontWeight="bold">
-          {`R$${formatValue(balance)}`}
+    <HStack justifyContent="space-between" w="fit-content">
+      <HStack w="full">
+        <Text fontSize="1.4rem" fontWeight="bold">
+          Balance: {`R$${formatValue(balance)}`}
         </Text>
-      </VStack>
-    </Box>
+      </HStack>
+      <Deposit />
+    </HStack>
   );
 }

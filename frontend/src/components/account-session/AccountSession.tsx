@@ -1,4 +1,4 @@
-import { Button, Heading, HStack, Icon, VStack } from '@chakra-ui/react';
+import { Button, Heading, HStack, Icon, Text, VStack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { FaRegSmileBeam } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
@@ -21,21 +21,24 @@ export default function AccountSession() {
   };
 
   return (
-    <VStack>
+    <HStack w="fit-content">
       <HStack w="full" justifyContent="flex-start">
-        <Heading as="h1">Hello, {username}!</Heading>
+        <Text fontSize="2xl" fontWeight="bold">
+          Hello, {username}!
+        </Text>
         <Icon as={FaRegSmileBeam} />
       </HStack>
+
       <Button
-        _active={{ backgroundColor: 'main.gren' }}
-        _hover={{ backgroundColor: 'main.gren', color: 'black' }}
+        _active={{ backgroundColor: 'gray.500' }}
+        _hover={{ backgroundColor: 'gray.500' }}
+        bgColor="gray.800"
         alignSelf="flex-start"
         color="white"
-        bgColor="main.green"
         onClick={logOut}
       >
         Logout
       </Button>
-    </VStack>
+    </HStack>
   );
 }
